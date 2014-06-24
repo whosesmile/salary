@@ -5,7 +5,7 @@
 *.pid
 *.seed
 pids
-build/
+build/Release
 node_modules/
 $RECYCLE.BIN/
 Thumbs.db
@@ -13,4 +13,3 @@ ehthumbs.db
 Desktop.ini
 animate.js
 lib-covcoverage
-build/Release
