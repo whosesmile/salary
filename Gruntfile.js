@@ -1,6 +1,8 @@
 /* global module:false, require:true */
-module.exports = function(grunt) {
+module.exports = function (grunt) {
 
+  var fs = require('fs');
+  var path = require('path');
   // load all grunt tasks matching the `grunt-*` pattern
   require('load-grunt-tasks')(grunt);
 
@@ -8,6 +10,7 @@ module.exports = function(grunt) {
   grunt.initConfig({
     // Metadata.
     pkg: grunt.file.readJSON('package.json'),
+
     banner: '/*! <%= pkg.title || pkg.name %> - v<%= pkg.version %> - ' +
       '<%= grunt.template.today("yyyy-mm-dd") %>\n' +
       '<%= pkg.homepage ? "* " + pkg.homepage + "\\n" : "" %>' +
@@ -35,46 +38,44 @@ module.exports = function(grunt) {
     },
     jshint: {
       options: {
-        curly: true,
-        eqeqeq: true,
-        immed: true,
-        latedef: true,
-        newcap: true,
-        noarg: true,
-        sub: true,
-        undef: true,
-        unused: true,
-        boss: true,
-        eqnull: true,
-        browser: true,
-        globals: {}
+        jshintrc: true
       },
       gruntfile: {
         src: 'Gruntfile.js'
       },
-      lib_test: {
-        src: ['lib/**/*.js', 'test/**/*.js']
+      develop: {
+        src: ['app/**/*.js']
       }
     },
     watch: {
+      options: {
+        livereload: true
+      },
       gruntfile: {
         files: '<%= jshint.gruntfile.src %>',
         tasks: ['jshint:gruntfile']
       },
-      lib_test: {
-        files: '<%= jshint.lib_test.src %>',
-        tasks: ['jshint:lib_test']
+      develop: {
+        files: '<%= jshint.develop.src %>',
+        tasks: ['jshint:develop']
+      }
+    },
+    connect: {
+      develop: {
+        options: {
+          base: ['app', '.'],
+          port: 8888,
+          // open: true,
+          livereload: true,
+          hostname: 'localhost'
+        }
       }
     }
   });
 
-  // These plugins provide necessary tasks.
-  grunt.loadNpmTasks('grunt-contrib-concat');
-  grunt.loadNpmTasks('grunt-contrib-uglify');
-  grunt.loadNpmTasks('grunt-contrib-jshint');
-  grunt.loadNpmTasks('grunt-contrib-watch');
-
-  // Default task.
-  grunt.registerTask('default', ['jshint', 'concat', 'uglify']);
+  // connect 和 watch 都会阻塞进程，为了防止watch阻塞connect 将watch放在connect后边 同时不要设定connect的keepalive
+  grunt.registerTask('default', function () {
+    grunt.task.run(['connect:develop', 'watch:develop']);
+  });
 
 };

@@ -1,4 +1,4 @@
 scaffold
 ========
 
-This is a scaffold  of angular application.
+This is a scaffold for angular application.
