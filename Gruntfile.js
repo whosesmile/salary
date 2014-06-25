@@ -63,6 +63,8 @@ module.exports = function (grunt) {
     connect: {
       develop: {
         options: {
+          // 经过测试 connect插件会依照base的定义顺序检查文件
+          // 这意味着如果两个目录存在同名文件，前面的优先返回
           base: ['app', '.'],
           port: 8888,
           open: true,
