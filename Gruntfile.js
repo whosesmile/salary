@@ -17,12 +17,28 @@ module.exports = function (grunt) {
       '* Copyright (c) <%= grunt.template.today("yyyy") %> <%= pkg.author.name %>;' +
       ' Licensed <%= _.pluck(pkg.licenses, "type").join(", ") %> */\n',
     // Task configuration.
+    wiredep: {
+      target: {
+        // Point to the files that should be updated when
+        // you run `grunt wiredep`
+        src: [
+          'app/index.html'
+        ],
+        cwd: '',
+        dependencies: true,
+        devDependencies: false,
+        exclude: [],
+        fileTypes: {},
+        ignorePath: '',
+        overrides: {}
+      }
+    },
     concat: {
       options: {
         banner: '<%= banner %>',
         stripBanners: true
       },
-      dist: {
+      develop: {
         src: ['lib/<%= pkg.name %>.js'],
         dest: 'dist/<%= pkg.name %>.js'
       }
@@ -31,7 +47,7 @@ module.exports = function (grunt) {
       options: {
         banner: '<%= banner %>'
       },
-      dist: {
+      develop: {
         src: '<%= concat.dist.dest %>',
         dest: 'dist/<%= pkg.name %>.min.js'
       }
@@ -63,8 +79,8 @@ module.exports = function (grunt) {
     connect: {
       develop: {
         options: {
-          // 经过测试 connect插件会依照base的定义顺序检查文件
-          // 这意味着如果两个目录存在同名文件，前面的优先返回
+          // 经过测试 connect插件会依照base的定义顺序检索文件
+          // 这意味着如果存在相同文件，定义在前面的会优先返回
           base: ['app', '.'],
           port: 8888,
           open: true,
