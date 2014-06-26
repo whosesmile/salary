@@ -1,8 +1,6 @@
 /* global module:false, require:true */
 module.exports = function (grunt) {
 
-  var fs = require('fs');
-  var path = require('path');
   // load all grunt tasks matching the `grunt-*` pattern
   require('load-grunt-tasks')(grunt);
 
@@ -11,23 +9,24 @@ module.exports = function (grunt) {
     // Metadata.
     pkg: grunt.file.readJSON('package.json'),
 
-    banner: '/*! <%= pkg.title || pkg.name %> - v<%= pkg.version %> - ' +
+    config: {
+      folder: 'temp'
+    },
+
+    banner: '/*! <%= pkg.name %> - v<%= pkg.version %> - ' +
       '<%= grunt.template.today("yyyy-mm-dd") %>\n' +
       '<%= pkg.homepage ? "* " + pkg.homepage + "\\n" : "" %>' +
       '* Copyright (c) <%= grunt.template.today("yyyy") %> <%= pkg.author.name %>;' +
       ' Licensed <%= _.pluck(pkg.licenses, "type").join(", ") %> */\n',
+
     // Task configuration.
     wiredep: {
       target: {
-        // Point to the files that should be updated when
-        // you run `grunt wiredep`
-        src: [
-          'app/index.html'
-        ],
+        src: ['app/index.html'],
         cwd: '',
         dependencies: true,
         devDependencies: false,
-        exclude: [],
+        exclude: ['json2', 'html5shiv'],
         fileTypes: {},
         ignorePath: '',
         overrides: {}
@@ -38,18 +37,18 @@ module.exports = function (grunt) {
         banner: '<%= banner %>',
         stripBanners: true
       },
-      develop: {
-        src: ['lib/<%= pkg.name %>.js'],
-        dest: 'dist/<%= pkg.name %>.js'
+      dev: {
+        src: ['app/app.js', 'app/common/**/*.js', 'app/modules/**/*.js'],
+        dest: '<%= config.folder %>/smile.js' // ^ ^
       }
     },
     uglify: {
       options: {
         banner: '<%= banner %>'
       },
-      develop: {
-        src: '<%= concat.dist.dest %>',
-        dest: 'dist/<%= pkg.name %>.min.js'
+      dev: {
+        src: '<%= concat.folder.dest %>',
+        dest: 'folder/<%= pkg.name %>.min.js'
       }
     },
     jshint: {
@@ -59,7 +58,7 @@ module.exports = function (grunt) {
       gruntfile: {
         src: 'Gruntfile.js'
       },
-      develop: {
+      dev: {
         src: ['app/**/*.js']
       }
     },
@@ -71,29 +70,61 @@ module.exports = function (grunt) {
         files: '<%= jshint.gruntfile.src %>',
         tasks: ['jshint:gruntfile']
       },
-      develop: {
-        files: '<%= jshint.develop.src %>',
-        tasks: ['jshint:develop']
+      dev: {
+        files: ['<%= jshint.dev.src %>'],
+        tasks: ['concat:dev']
+      },
+      html: {
+        files: 'app/index.html',
+        tasks: ['copy:html']
       }
     },
     connect: {
-      develop: {
+      dev: {
         options: {
           // 经过测试 connect插件会依照base的定义顺序检索文件
           // 这意味着如果存在相同文件，定义在前面的会优先返回
-          base: ['app', '.'],
+          base: ['<%= config.folder %>', '.'],
           port: 8888,
-          open: true,
+          // open: true,
           livereload: true,
           hostname: 'localhost'
         }
       }
+    },
+    copy: {
+      dev: {
+        files: [{
+          expand: true,
+          cwd: 'app',
+          src: ['index.html', '**/*.{ico,png,txt,gif,jpg,jpeg,css,svg,eot,ttf,woff,json}'],
+          dest: '<%= config.folder %>'
+        }]
+      },
+      html: {
+        files: [{
+          expand: true,
+          cwd: 'app',
+          src: ['**/*.html'],
+          dest: '<%= config.folder %>'
+        }]
+      }
+    },
+    clean: {
+      dev: ['<%= config.folder %>'],
     }
   });
 
-  // connect 和 watch 都会阻塞进程，为了防止watch阻塞connect 将watch放在connect后边 同时不要设定connect的keepalive
+  // connect 和 watch 都会阻塞进程 为了防止watch阻塞connect
+  // 将watch放在connect后边, 同时不要设定connect的keepalive
   grunt.registerTask('default', function () {
-    grunt.task.run(['connect:develop', 'watch:develop']);
+    grunt.config('config.folder', 'temp');
+    grunt.task.run(['clean:dev', 'copy:dev', 'concat:dev', 'connect:dev', 'watch']);
+  });
+
+  grunt.registerTask('build', function () {
+    grunt.config('config.folder', 'build');
+    grunt.task.run(['clean:dev', 'copy:dev', 'concat:dev', 'connect:dev', 'watch']);
   });
 
 };

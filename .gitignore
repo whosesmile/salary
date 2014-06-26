@@ -1,13 +1,12 @@
 .DS_Store
-.grunt
-.tmp
 .sass-cache
 .idea
 *.log
 *.pid
 *.seed
 pids
-build/Release
+temp
+build
 node_modules
 bower_components
 $RECYCLE.BIN
