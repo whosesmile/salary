@@ -88,7 +88,25 @@ module.exports = function (grunt) {
           port: 8888,
           // open: true,
           livereload: true,
-          hostname: 'localhost'
+          hostname: 'localhost',
+          middleware: function (connect, options, middlewares) {
+            var fs = require('fs');
+            var path = require('path');
+            var support = ['POST', 'PUT', 'DELETE'];
+            middlewares.unshift(function (req, res, next) {
+              // 单独处理POST请求 请求的地址必须是文件 这里没有进行rewrite处理
+              if (support.indexOf(req.method.toUpperCase()) != -1) {
+                var filepath = path.join(options.base[0], req.url);
+                if (fs.existsSync(filepath) && fs.statSync(filepath).isFile()) {
+                  return res.end(fs.readFileSync(filepath));
+                }
+              }
+
+              return next();
+            });
+
+            return middlewares;
+          },
         }
       }
     },

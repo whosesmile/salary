@@ -23,6 +23,8 @@ app.config(['$httpProvider',
 
 // TEST
 app.run(function($http) {
-  console.log(123)
-  $http.get('.');
+  $http({
+    method: 'post',
+    url: 'mock/welcome.json'
+  })
 });

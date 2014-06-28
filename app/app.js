@@ -42,4 +42,4 @@
 })();
 
 // Initialize
-var app = angular.module('app', ['ui.router', 'common', 'demoModule']);
+var app = angular.module('app', ['ui.router', 'demoModule']);
