@@ -26,7 +26,7 @@ module.exports = function (grunt) {
         cwd: '',
         dependencies: true,
         devDependencies: false,
-        exclude: ['json2', 'html5shiv'],
+        exclude: ['json2', 'html5shiv', 'bootstrap'],
         fileTypes: {},
         ignorePath: '',
         overrides: {}
@@ -95,8 +95,11 @@ module.exports = function (grunt) {
             var support = ['POST', 'PUT', 'DELETE'];
             middlewares.unshift(function (req, res, next) {
               // 单独处理POST请求 请求的地址必须是文件 这里没有进行rewrite处理
-              if (support.indexOf(req.method.toUpperCase()) != -1) {
+              if (support.indexOf(req.method.toUpperCase()) !== -1) {
                 var filepath = path.join(options.base[0], req.url);
+                if (filepath.indexOf('?') >= 0) {
+                  filepath = filepath.substring(0, filepath.indexOf('?'));
+                }
                 if (fs.existsSync(filepath) && fs.statSync(filepath).isFile()) {
                   return res.end(fs.readFileSync(filepath));
                 }
@@ -140,8 +143,8 @@ module.exports = function (grunt) {
     grunt.task.run(['clean:dev', 'copy:dev', 'concat:dev', 'connect:dev', 'watch']);
   });
 
-  grunt.registerTask('build', function () {
-    grunt.config('config.folder', 'build');
+  grunt.registerTask('dist', function () {
+    grunt.config('config.folder', 'dist');
     grunt.task.run(['clean:dev', 'copy:dev', 'concat:dev', 'connect:dev', 'watch']);
   });
 
