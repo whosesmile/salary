@@ -65,11 +65,13 @@ var serialize = function (obj) {
       }
       else if (value instanceof Object) {
         for (subName in value) {
-          subValue = value[subName];
-          fullSubName = name + '[' + subName + ']';
-          innerObj = {};
-          innerObj[fullSubName] = subValue;
-          query += serialize(innerObj) + '&';
+          if (value.hasOwnProperty(subName)) {
+            subValue = value[subName];
+            fullSubName = name + '[' + subName + ']';
+            innerObj = {};
+            innerObj[fullSubName] = subValue;
+            query += serialize(innerObj) + '&';
+          }
         }
       }
       else if (value !== undefined && value !== null) {
@@ -82,7 +84,7 @@ var serialize = function (obj) {
 };
 
 // Initialize
-var app = angular.module('app', ['ui.router', 'demoModule']);
+var app = angular.module('app', ['ui.router', 'ui.bootstrap', 'demoModule']);
 
 // HTTP拦截器
 app.config(['$httpProvider',
@@ -92,6 +94,7 @@ app.config(['$httpProvider',
 
     // Override transformRequest to serialize form data like jquery
     $httpProvider.defaults.transformRequest = [
+
       function (data) {
         return angular.isObject(data) && String(data) !== '[object File]' ? serialize(data) : data;
       }
