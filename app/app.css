@@ -1,14 +1,32 @@
+/* angular */
+input.ng-valid.ng-dirty, textarea.ng-valid.ng-dirty {
+	border-color: #57A235;
+}
+input.ng-valid.ng-dirty:focus, textarea.ng-valid.ng-dirty:focus {
+	border-color: #579935;
+}
+input.ng-invalid.ng-dirty, textarea.ng-invalid.ng-dirty {
+	border-color: #EE8800
+}
+input.ng-invalid.ng-dirty:focus, textarea.ng-invalid.ng-dirty:focus {
+	border-color: #FF9900;
+}
+
 /* ui-bootstrap */
 .nav, .pagination, .carousel, .panel-title a {
 	cursor: pointer;
 }
-.input-paper {
-	border-width: 0 0 1px 0;
-	border-bottom: 1px solid #CCCCCC;
-}
+
+/* cusomize */
 .full-width {
 	width: 100%;
 }
 .form-group-first {
 	margin-top: 15px;
+}
+.mg-vt-30 {
+	margin: 30px 0;
+}
+.mg-vt-15 {
+	margin: 15px 0;
 }

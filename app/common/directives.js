@@ -7,8 +7,6 @@ app.directive('csFocus', ['$timeout',
       restrict: 'A',
       replace: false,
       link: function (scope, elem) {
-        // if input is in a dialog and dialog has a animate
-        // so here has a repeat check but only recursive onetime
         var times = 0;
         (function focus() {
           if (elem.is(':visible')) {
@@ -22,3 +20,21 @@ app.directive('csFocus', ['$timeout',
     };
   }
 ]);
+
+/**
+ * 动态切换Input的type为Number
+ * PS: placeholder text for an input type="number" does not work in mobile webkit
+ */
+app.directive('csNumber', function () {
+  return {
+    restrict: 'A',
+    replace: false,
+    link: function (scope, elem) {
+      elem.on('focus', function () {
+        this.type = 'number';
+      }).on('blur', function () {
+        this.type = 'text';
+      });
+    }
+  };
+});

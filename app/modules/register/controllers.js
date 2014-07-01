@@ -14,14 +14,17 @@ registerModule.controller('mobileController', ['$scope', '$state', 'registerServ
 ]);
 
 // 输入验证码
-registerModule.controller('captchaController', ['$scope', '$state', '$timeout', 'registerService',
-  function ($scope, $state, $timeout, service) {
+registerModule.controller('captchaController', ['$scope', '$state', '$timeout', 'registerService', 'titleService',
+  function ($scope, $state, $timeout, service, titleService) {
 
     $scope.submit = function () {
-      service.sendCaptch().then(function (res) {
-
+      $scope.processing = true;
+      service.sendCaptcha().then(function (res) {
+        $state.go('register.success');
       }, function (rej) {
         console.log(rej);
+      })['finally'](function () {
+        $scope.processing = false;
       });
     };
 
@@ -51,6 +54,20 @@ registerModule.controller('captchaController', ['$scope', '$state', '$timeout', 
         }
       }, 1000);
     })();
+
+  }
+]);
+
+// 注册成功
+registerModule.controller('successController', ['$scope', '$state', 'registerService',
+  function ($scope, $state, service) {
+    
+  }
+]);
+
+// 注册失败
+registerModule.controller('failureController', ['$scope', '$state', 'registerService',
+  function ($scope, $state, service) {
 
   }
 ]);

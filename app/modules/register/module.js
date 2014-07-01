@@ -19,6 +19,14 @@ registerModule.config(['$stateProvider', '$urlRouterProvider',
       url: "/step2",
       controller: 'captchaController',
       templateUrl: "modules/register/templates/captcha.html"
+    }).state('register.success', {
+      url: "/success",
+      controller: 'successController',
+      templateUrl: "modules/register/templates/success.html"
+    }).state('register.failure', {
+      url: "/failure",
+      controller: 'successController',
+      templateUrl: "modules/register/templates/failure.html"
     });
   }
 ]);

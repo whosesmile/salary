@@ -10,7 +10,7 @@ registerModule.factory('registerService', ['$http',
         });
       },
 
-      sendCapcha: function () {
+      sendCaptcha: function () {
         return $http({
           url: 'mock/register/mobile.json',
           method: 'post'
