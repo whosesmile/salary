@@ -84,7 +84,7 @@ var serialize = function (obj) {
 };
 
 // Initialize
-var app = angular.module('app', ['ui.router', 'ui.bootstrap', 'demoModule']);
+var app = angular.module('app', ['ui.router', 'ui.bootstrap', 'templates', 'registerModule']);
 
 // HTTP拦截器
 app.config(['$httpProvider',
@@ -108,8 +108,9 @@ app.config(['$httpProvider',
             return $q.when(config);
           },
           response: function (response) {
-            if (response.config.parsing !== false && response.status === 200 && response.data.code === 200) {
-              return response.data;
+            if (response.config.parsing !== false && response.status === 200 && angular.isObject(response.data)) {
+              var res = response.data;
+              return res.code === 200 ? res.data : $q.reject(res.data)
             }
             return $q.when(response);
           },
@@ -124,3 +125,8 @@ app.config(['$httpProvider',
     ]);
   }
 ]);
+
+// bootstrap
+angular.element(document).ready(function () {
+  angular.bootstrap(document, ['app']);
+});

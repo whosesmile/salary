@@ -32,13 +32,25 @@ module.exports = function (grunt) {
         overrides: {}
       }
     },
+    html2js: {
+      options: {
+        module: 'templates',
+        rename: function (name) {
+          return name.replace('../app/', '');
+        }
+      },
+      dev: {
+        src: ['app/**/templates/*.html'],
+        dest: 'app/templates.js'
+      },
+    },
     concat: {
       options: {
         banner: '<%= banner %>',
         stripBanners: true
       },
       dev: {
-        src: ['app/app.js', 'app/common/**/*.js', 'app/modules/**/*.js'],
+        src: ['app/app.js', 'app/common/**/*.js', 'app/modules/**/module.js', 'app/modules/**/*.js', 'app/templates.js'],
         dest: '<%= config.folder %>/smile.js' // ^ ^
       }
     },
@@ -47,8 +59,8 @@ module.exports = function (grunt) {
         banner: '<%= banner %>'
       },
       dev: {
-        src: '<%= concat.folder.dest %>',
-        dest: 'folder/<%= pkg.name %>.min.js'
+        src: '<%= concat.dev.src %>',
+        dest: '<%= config.folder %>/smile.js' // ^ ^
       }
     },
     jshint: {
@@ -67,16 +79,23 @@ module.exports = function (grunt) {
         livereload: true
       },
       gruntfile: {
+        options: {
+          reload: true
+        },
         files: '<%= jshint.gruntfile.src %>',
         tasks: ['jshint:gruntfile']
       },
-      dev: {
+      js: {
         files: ['<%= jshint.dev.src %>'],
         tasks: ['concat:dev']
       },
       html: {
-        files: 'app/index.html',
-        tasks: ['copy:html']
+        files: ['app/**/*.html'],
+        tasks: ['html2js:dev', 'concat:dev']
+      },
+      dev: {
+        files: ['app/**/*', '!app/**/*.js', '!app/**/*.html'],
+        tasks: ['copy:dev']
       }
     },
     connect: {
@@ -86,9 +105,9 @@ module.exports = function (grunt) {
           // 这意味着如果存在相同文件，定义在前面的会优先返回
           base: ['<%= config.folder %>', '.'],
           port: 8888,
-          // open: true,
+          open: 'http://127.0.0.1:<%= connect.dev.options.port %>',
           livereload: true,
-          hostname: 'localhost',
+          hostname: '*',
           middleware: function (connect, options, middlewares) {
             var fs = require('fs');
             var path = require('path');
@@ -118,7 +137,7 @@ module.exports = function (grunt) {
         files: [{
           expand: true,
           cwd: 'app',
-          src: ['index.html', '**/*.{ico,png,txt,gif,jpg,jpeg,css,svg,eot,ttf,woff,json}'],
+          src: ['index.html', '**/*.{ico,png,txt,gif,jpg,jpeg,css,svg,eot,ttf,woff,json,html}'],
           dest: '<%= config.folder %>'
         }]
       },
@@ -140,12 +159,12 @@ module.exports = function (grunt) {
   // 将watch放在connect后边, 同时不要设定connect的keepalive
   grunt.registerTask('default', function () {
     grunt.config('config.folder', 'temp');
-    grunt.task.run(['clean:dev', 'copy:dev', 'concat:dev', 'connect:dev', 'watch']);
+    grunt.task.run(['clean:dev', 'copy:dev', 'html2js:dev', 'concat:dev', 'connect:dev', 'watch']);
   });
 
   grunt.registerTask('dist', function () {
     grunt.config('config.folder', 'dist');
-    grunt.task.run(['clean:dev', 'copy:dev', 'concat:dev', 'connect:dev', 'watch']);
+    grunt.task.run(['clean:dev', 'copy:dev', 'html2js:dev', 'uglify:dev', 'connect:dev', 'watch']);
   });
 
 };
