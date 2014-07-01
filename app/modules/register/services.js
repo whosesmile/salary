@@ -1,25 +1,27 @@
-registerModule.factory('registerService', ['$http',
-  function ($http) {
+/* global registerModule:true */
+
+registerModule.factory('registerService', ['$http', '$timeout',
+  function ($http, $timeout) {
 
     return {
 
       sendMobile: function () {
         return $http({
-          url: 'mock/register/mobile.json',
+          url: 'mock/register/success.json',
           method: 'post'
         });
       },
 
       sendCaptcha: function () {
         return $http({
-          url: 'mock/register/mobile.json',
+          url: 'mock/register/failure.json',
           method: 'post'
         });
       },
 
       sendFresh: function () {
         return $http({
-          url: 'mock/register/mobile.json',
+          url: 'mock/register/success.json',
           method: 'post'
         });
       }

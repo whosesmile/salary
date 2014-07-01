@@ -2,18 +2,21 @@ angular.module('templates', ['modules/register/templates/captcha.html', 'modules
 
 angular.module("modules/register/templates/captcha.html", []).run(["$templateCache", function($templateCache) {
   $templateCache.put("modules/register/templates/captcha.html",
-    "<form role=\"form\" name=\"captchaForm\" ng-submit=\"submit()\">\n" +
+    "<form role=\"form\" name=\"captchaForm\" ng-submit=\"submit()\" autocomplete=\"false\">\n" +
     "  <div class=\"form-group form-group-first\">\n" +
-    "    <input type=\"text\" name=\"captcha\" ng-model=\"captcha\" class=\"form-control\" id=\"inputCapcha\" placeholder=\"请输入验证码\" cs-number required ng-pattern=\"/^\\d{4,8}$/\" />\n" +
+    "    <input type=\"text\" name=\"captcha\" ng-model=\"captcha\" class=\"form-control\" id=\"inputCapcha\" placeholder=\"请输入验证码\" cs-number cs-focus required ng-pattern=\"/^\\d{4,8}$/\" ng-if=\"!message\" />\n" +
+    "  </div>\n" +
+    "  <div class=\"form-group form-group-first has-error\" ng-if=\"message\" ng-click=\"$parent.message=''\">\n" +
+    "    <input type=\"text\" name=\"message\" ng-model=\"message\" class=\"form-control no-bg\" readonly />\n" +
     "  </div>\n" +
     "  <div class=\"form-group\">\n" +
     "    <button type=\"submit\" class=\"btn btn-primary full-width\" ng-disabled=\"captchaForm.$invalid || processing\">\n" +
-    "      <span ng-hide=\"processing\">注册账号</span><span ng-show=\"processing\">请稍后...</span>\n" +
+    "      <span ng-hide=\"processing\">{{ submitText || '注册账号' }}</span><span ng-show=\"processing\">请稍后...</span>\n" +
     "    </button>\n" +
     "  </div>\n" +
-    "  <div class=\"form-group\" ng-hide=\"processing\">\n" +
+    "  <div class=\"form-group\">\n" +
     "    <small ng-if=\"!resend\">{{ remaining }}秒后可重新发送</small>\n" +
-    "    <a ng-if=\"resend\" class=\"small\">重发验证码</a>\n" +
+    "    <a ng-if=\"resend\" class=\"small\" ng-click=\"refresh()\">重发验证码</a>\n" +
     "  </div>\n" +
     "</form>");
 }]);
@@ -21,7 +24,7 @@ angular.module("modules/register/templates/captcha.html", []).run(["$templateCac
 angular.module("modules/register/templates/failure.html", []).run(["$templateCache", function($templateCache) {
   $templateCache.put("modules/register/templates/failure.html",
     "<p class=\"text-center text-danger mg-vt-30\">验证码输入有误，请重新输入！</p>\n" +
-    "<a ui-sref=\"register.capacha\" class=\"btn btn-primary full-width\">重新验证</a>");
+    "<a ui-sref=\"register.captcha\" class=\"btn btn-primary full-width\">重新验证</a>");
 }]);
 
 angular.module("modules/register/templates/mobile.html", []).run(["$templateCache", function($templateCache) {

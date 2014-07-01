@@ -1,12 +1,14 @@
+/* global registerModule:true */
+
 // 输入手机
 registerModule.controller('mobileController', ['$scope', '$state', 'registerService',
   function ($scope, $state, service) {
 
     $scope.submit = function () {
-      service.sendMobile().then(function (res) {
+      service.sendMobile().then(function () {
         $state.go('register.captcha');
-      }, function (rej) {
-        console.log(rej);
+      }, function () {
+        // console.log(rej);
       });
     };
 
@@ -14,59 +16,65 @@ registerModule.controller('mobileController', ['$scope', '$state', 'registerServ
 ]);
 
 // 输入验证码
-registerModule.controller('captchaController', ['$scope', '$state', '$timeout', 'registerService', 'titleService',
-  function ($scope, $state, $timeout, service, titleService) {
+registerModule.controller('captchaController', ['$scope', '$state', '$timeout', 'registerService',
+  function ($scope, $state, $timeout, service) {
+
+    // $scope.submitText = '注册账号';
 
     $scope.submit = function () {
       $scope.processing = true;
-      service.sendCaptcha().then(function (res) {
+      service.sendCaptcha().then(function () {
         $state.go('register.success');
-      }, function (rej) {
-        console.log(rej);
+      }, function () {
+        $scope.message = '验证码输入有误，请重新输入！';
       })['finally'](function () {
+        $scope.submitText = '重新验证';
         $scope.processing = false;
       });
     };
 
-    $scope.captcha = function () {
-      service.sendFresh();
-    };
-
-    $scope.resend = false;
-    $scope.remaining = 59;
-
     var timer = null;
 
-    // 清理工作
-    $scope.$on('$destroy', function () {
+    // 重置计时器
+    var recycle = function () {
       $timeout.cancel(timer);
-    });
+      $scope.resend = false;
+      $scope.remaining = 5;
+      countdown();
+    };
 
-    // 更新时间
-    (function update() {
+    // 倒计时
+    var countdown = function () {
       timer = $timeout(function () {
         $scope.remaining -= 1;
         if ($scope.remaining === 0) {
           $scope.resend = true;
         }
         else {
-          update();
+          countdown();
         }
       }, 1000);
-    })();
+    };
+
+    // 开始自动执行
+    recycle();
+
+    $scope.refresh = function () {
+      service.sendFresh().then(function () {
+        recycle();
+      });
+    };
+
+    // 清理工作
+    $scope.$on('$destroy', function () {
+      $timeout.cancel(timer);
+    });
 
   }
 ]);
 
 // 注册成功
 registerModule.controller('successController', ['$scope', '$state', 'registerService',
-  function ($scope, $state, service) {
-    
-  }
-]);
-
-// 注册失败
-registerModule.controller('failureController', ['$scope', '$state', 'registerService',
   function ($scope, $state, service) {
 
   }

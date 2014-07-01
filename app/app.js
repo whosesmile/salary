@@ -110,7 +110,7 @@ app.config(['$httpProvider',
           response: function (response) {
             if (response.config.parsing !== false && response.status === 200 && angular.isObject(response.data)) {
               var res = response.data;
-              return res.code === 200 ? res.data : $q.reject(res.data)
+              return res.code === 200 ? res.data : $q.reject(res.data);
             }
             return $q.when(response);
           },

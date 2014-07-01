@@ -23,7 +23,7 @@ app.directive('csFocus', ['$timeout',
 
 /**
  * 动态切换Input的type为Number
- * PS: placeholder text for an input type="number" does not work in mobile webkit
+ * placeholder text for an input type="number" does not work in mobile webkit
  */
 app.directive('csNumber', function () {
   return {

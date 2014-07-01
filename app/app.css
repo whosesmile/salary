@@ -30,3 +30,9 @@ input.ng-invalid.ng-dirty:focus, textarea.ng-invalid.ng-dirty:focus {
 .mg-vt-15 {
 	margin: 15px 0;
 }
+.no-bg {
+	background: transparent !important;
+}
+.has-error input {
+	color: #E40;
+}
