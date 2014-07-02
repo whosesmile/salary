@@ -1,28 +1,14 @@
 /* global welcomeModule:true */
 
-welcomeModule.factory('welcomeService', ['$http',
-  function ($http) {
+welcomeModule.factory('welcomeService', ['$http', '$timeout',
+  function ($http, $timeout) {
 
     return {
 
-      sendMobile: function () {
+      getCatagory: function () {
         return $http({
-          url: 'mock/register/success.json',
-          method: 'post'
-        });
-      },
-
-      sendCaptcha: function () {
-        return $http({
-          url: 'mock/register/failure.json',
-          method: 'post'
-        });
-      },
-
-      sendFresh: function () {
-        return $http({
-          url: 'mock/register/success.json',
-          method: 'post'
+          url: 'mock/welcome/catagory.json',
+          method: 'get'
         });
       }
 

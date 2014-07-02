@@ -13,8 +13,8 @@ input.ng-invalid.ng-dirty:focus, textarea.ng-invalid.ng-dirty:focus { border-col
 .no-bg { background: transparent !important; }
 .has-error input { color: #E40; }
 #welcome #header { border-bottom: 1px solid #EEEEEE; padding: 15px 10px; }
-#welcome #content div[class^="col-"] { height: 33.33333333vw; border-bottom: 1px solid #EEEEEE; padding-left: 0; padding-right: 0; }
-#welcome #content div[class^="col-"]:nth-child(2) { border-left: 1px solid #EEEEEE; border-right: 1px solid #EEEEEE; }
+#welcome #content div[class^="col-"] { height: 33.33333333vw; border-bottom: 1px solid #EEEEEE; border-right: 1px solid #EEEEEE; padding-left: 0; padding-right: 0; }
+#welcome #content div[class^="col-"]:nth-child(3) { border-right: none; }
 #welcome #content div[class^="col-"] .box { display: table; width: 100%; height: 100%; }
 #welcome #content div[class^="col-"] .cell { display: table-cell; text-align: center; vertical-align: middle; }
 #welcome #content div[class^="col-"] .category { display: block; }

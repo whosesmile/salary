@@ -63,94 +63,22 @@ angular.module("modules/welcome/templates/home.html", []).run(["$templateCache",
     "<section id=\"welcome\">\n" +
     "  <header id=\"header\">\n" +
     "    <span class=\"glyphicon glyphicon-map-marker\"></span>\n" +
-    "    <span>北京</span>\n" +
-    "    <span>龙湖社区</span>\n" +
+    "    <span class=\"city\">北京</span>\n" +
+    "    <span class=\"community\">龙湖社区</span>\n" +
     "  </header>\n" +
     "  <div id=\"content\">\n" +
     "    <div class=\"container-fluid\">\n" +
-    "\n" +
-    "      <div class=\"row \">\n" +
-    "        <div class=\"col-xs-4 col-sm-4\">\n" +
+    "      <div class=\"row\" ng-repeat=\"items in catagory|group:3\">\n" +
+    "        <div class=\"col-xs-4 col-sm-4\" ng-repeat=\"item in items\">\n" +
     "          <div class=\"box\">\n" +
-    "            <a class=\"cell\" href=\"\">\n" +
+    "            <a class=\"cell\" href=\"#/{{ item.href }}\">\n" +
     "              <span class=\"glyphicon glyphicon-fire\"></span>\n" +
-    "              <span class=\"category\">美居方案</span>\n" +
+    "              <span class=\"category\">{{ item.name }}</span>\n" +
     "            </a>\n" +
     "          </div>\n" +
-    "        </div>\n" +
-    "        <div class=\"col-xs-4 col-sm-4\">\n" +
-    "          <div class=\"box\">\n" +
-    "            <a class=\"cell\" href=\"\">\n" +
-    "              <span class=\"glyphicon glyphicon-fire\"></span>\n" +
-    "              <span class=\"category\">美居方案</span>\n" +
-    "            </a>\n" +
-    "          </div>\n" +
-    "        </div>\n" +
-    "        \n" +
-    "        <div class=\"col-xs-4 col-sm-4\">\n" +
-    "          <div class=\"box\">\n" +
-    "            <a class=\"cell\" href=\"\">\n" +
-    "              <span class=\"glyphicon glyphicon-fire\"></span>\n" +
-    "              <span class=\"category\">装修手册</span>\n" +
-    "            </a>\n" +
-    "          </div>\n" +
-    "        </div>\n" +
-    "      </div>\n" +
-    "\n" +
-    "      <div class=\"row \">\n" +
-    "        <div class=\"col-xs-4 col-sm-4\">\n" +
-    "          <div class=\"box\">\n" +
-    "            <a class=\"cell\" href=\"\">\n" +
-    "              <span class=\"glyphicon glyphicon-fire\"></span>\n" +
-    "              <span class=\"category\">美食</span>\n" +
-    "            </a>\n" +
-    "          </div>\n" +
-    "        </div>\n" +
-    "        <div class=\"col-xs-4 col-sm-4\">\n" +
-    "          <div class=\"box\">\n" +
-    "            <a class=\"cell\" href=\"#/register/step1\">\n" +
-    "              <span class=\"glyphicon glyphicon-fire\"></span>\n" +
-    "              <span class=\"category\">注册</span>\n" +
-    "            </a>\n" +
-    "          </div>\n" +
-    "        </div>\n" +
-    "        <div class=\"col-xs-4 col-sm-4\">\n" +
-    "          <div class=\"box\">\n" +
-    "            <a class=\"cell\" href=\"\">\n" +
-    "              <span class=\"glyphicon glyphicon-fire\"></span>\n" +
-    "              <span class=\"category\">休闲娱乐</span>\n" +
-    "            </a>\n" +
-    "          </div>\n" +
-    "        </div>\n" +
-    "      </div>\n" +
-    "\n" +
-    "      <div class=\"row \">\n" +
-    "        <div class=\"col-xs-4 col-sm-4\">\n" +
-    "          <div class=\"box\">\n" +
-    "            <a class=\"cell\" href=\"\">\n" +
-    "              <span class=\"glyphicon glyphicon-fire\"></span>\n" +
-    "              <span class=\"category\">生活服务</span>\n" +
-    "            </a>\n" +
-    "          </div>\n" +
-    "        </div>\n" +
-    "        <div class=\"col-xs-4 col-sm-4\">\n" +
-    "          <div class=\"box\">\n" +
-    "            <a class=\"cell\" href=\"\">\n" +
-    "              <span class=\"glyphicon glyphicon-fire\"></span>\n" +
-    "              <span class=\"category\">违章查询</span>\n" +
-    "            </a>\n" +
-    "          </div>\n" +
-    "        </div>\n" +
-    "        <div class=\"col-xs-4 col-sm-4\">\n" +
-    "          <div class=\"box\">\n" +
-    "            <a class=\"cell\" href=\"\">\n" +
-    "              <span class=\"glyphicon glyphicon-fire\"></span>\n" +
-    "              <span class=\"category\">自然地物</span>\n" +
-    "            </a>\n" +
-    "          </div> \n" +
     "        </div>\n" +
     "      </div>\n" +
     "    </div>\n" +
-    "  <div>\n" +
+    "  </div>\n" +
     "</section>");
 }]);

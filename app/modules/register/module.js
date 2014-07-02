@@ -5,6 +5,8 @@ var registerModule = angular.module('registerModule', ['ui.router', 'ui.bootstra
 registerModule.config(['$stateProvider', '$urlRouterProvider',
   function ($stateProvider, $urlRouterProvider) {
 
+    $urlRouterProvider.when("/register", "/register/step1");
+
     $stateProvider
       .state('register', {
         abstract: true,
