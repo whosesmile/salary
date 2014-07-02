@@ -1,38 +1,20 @@
 /* angular */
-input.ng-valid.ng-dirty, textarea.ng-valid.ng-dirty {
-	border-color: #57A235;
-}
-input.ng-valid.ng-dirty:focus, textarea.ng-valid.ng-dirty:focus {
-	border-color: #579935;
-}
-input.ng-invalid.ng-dirty, textarea.ng-invalid.ng-dirty {
-	border-color: #EE8800
-}
-input.ng-invalid.ng-dirty:focus, textarea.ng-invalid.ng-dirty:focus {
-	border-color: #FF9900;
-}
-
+input.ng-valid.ng-dirty, textarea.ng-valid.ng-dirty { border-color: #57A235; }
+input.ng-valid.ng-dirty:focus, textarea.ng-valid.ng-dirty:focus { border-color: #579935; }
+input.ng-invalid.ng-dirty, textarea.ng-invalid.ng-dirty { border-color: #EE8800 }
+input.ng-invalid.ng-dirty:focus, textarea.ng-invalid.ng-dirty:focus { border-color: #FF9900; }
 /* ui-bootstrap */
-.nav, .pagination, .carousel, .panel-title a {
-	cursor: pointer;
-}
-
+.nav, .pagination, .carousel, .panel-title a { cursor: pointer; }
 /* cusomize */
-.full-width {
-	width: 100%;
-}
-.form-group-first {
-	margin-top: 15px;
-}
-.mg-vt-30 {
-	margin: 30px 0;
-}
-.mg-vt-15 {
-	margin: 15px 0;
-}
-.no-bg {
-	background: transparent !important;
-}
-.has-error input {
-	color: #E40;
-}
+.full-width { width: 100%; }
+.form-group-first { margin-top: 15px; }
+.mg-vt-30 { margin: 30px 0; }
+.mg-vt-15 { margin: 15px 0; }
+.no-bg { background: transparent !important; }
+.has-error input { color: #E40; }
+#welcome #header { border-bottom: 1px solid #EEEEEE; padding: 15px 10px; }
+#welcome #content div[class^="col-"] { height: 33.33333333vw; border-bottom: 1px solid #EEEEEE; padding-left: 0; padding-right: 0; }
+#welcome #content div[class^="col-"]:nth-child(2) { border-left: 1px solid #EEEEEE; border-right: 1px solid #EEEEEE; }
+#welcome #content div[class^="col-"] .box { display: table; width: 100%; height: 100%; }
+#welcome #content div[class^="col-"] .cell { display: table-cell; text-align: center; vertical-align: middle; }
+#welcome #content div[class^="col-"] .category { display: block; }

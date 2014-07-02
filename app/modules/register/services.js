@@ -14,7 +14,7 @@ registerModule.factory('registerService', ['$http',
 
       sendCaptcha: function () {
         return $http({
-          url: 'mock/register/failure.json',
+          url: 'mock/register/success.json',
           method: 'post'
         });
       },

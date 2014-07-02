@@ -96,6 +96,10 @@ module.exports = function (grunt) {
       dev: {
         files: ['app/**/*', '!app/**/*.js', '!app/**/*.html'],
         tasks: ['copy:dev']
+      },
+      mock: {
+        files: ['app/mock/**/*'],
+        tasks: ['copy:mock']
       }
     },
     connect: {
@@ -147,6 +151,14 @@ module.exports = function (grunt) {
           cwd: 'app',
           src: ['**/*.html'],
           dest: '<%= config.folder %>'
+        }]
+      },
+      mock: {
+        files: [{
+          expand: true,
+          cwd: 'app/mock',
+          src: ['**/*'],
+          dest: '<%= config.folder %>/mock'
         }]
       }
     },

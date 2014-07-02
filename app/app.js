@@ -84,7 +84,7 @@ var serialize = function (obj) {
 };
 
 // Initialize
-var app = angular.module('app', ['ui.router', 'ui.bootstrap', 'templates', 'registerModule']);
+var app = angular.module('app', ['ui.router', 'ui.bootstrap', 'templates', 'welcomeModule', 'registerModule']);
 
 // HTTP拦截器
 app.config(['$httpProvider',

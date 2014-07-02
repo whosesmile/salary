@@ -5,8 +5,6 @@ var registerModule = angular.module('registerModule', ['ui.router', 'ui.bootstra
 registerModule.config(['$stateProvider', '$urlRouterProvider',
   function ($stateProvider, $urlRouterProvider) {
 
-    $urlRouterProvider.otherwise("/register/step1");
-
     $stateProvider
       .state('register', {
         abstract: true,
