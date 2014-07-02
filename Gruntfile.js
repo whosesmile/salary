@@ -51,7 +51,7 @@ module.exports = function (grunt) {
       },
       dev: {
         src: ['app/app.js', 'app/common/**/*.js', 'app/modules/**/module.js', 'app/modules/**/*.js', 'app/templates.js'],
-        dest: '<%= config.folder %>/smile.js' // ^ ^
+        dest: '<%= config.folder %>/application.js' // ^ ^
       }
     },
     uglify: {
@@ -60,7 +60,7 @@ module.exports = function (grunt) {
       },
       dev: {
         src: '<%= concat.dev.src %>',
-        dest: '<%= config.folder %>/smile.js' // ^ ^
+        dest: '<%= config.folder %>/application.js' // ^ ^
       }
     },
     jshint: {
