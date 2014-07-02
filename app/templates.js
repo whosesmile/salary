@@ -1,4 +1,25 @@
-angular.module('templates', ['modules/register/templates/captcha.html', 'modules/register/templates/failure.html', 'modules/register/templates/mobile.html', 'modules/register/templates/register.html', 'modules/register/templates/success.html', 'modules/welcome/templates/home.html']);
+angular.module('templates', ['modules/decorate/templates/decorate.html', 'modules/decorate/templates/houses.html', 'modules/register/templates/captcha.html', 'modules/register/templates/failure.html', 'modules/register/templates/mobile.html', 'modules/register/templates/register.html', 'modules/register/templates/success.html', 'modules/welcome/templates/home.html']);
+
+angular.module("modules/decorate/templates/decorate.html", []).run(["$templateCache", function($templateCache) {
+  $templateCache.put("modules/decorate/templates/decorate.html",
+    "<div id=\"decorate\">\n" +
+    "  <div ui-view></div>\n" +
+    "</div>");
+}]);
+
+angular.module("modules/decorate/templates/houses.html", []).run(["$templateCache", function($templateCache) {
+  $templateCache.put("modules/decorate/templates/houses.html",
+    "<ul class=\"list-unstyled houses\">\n" +
+    "  <li ng-repeat=\"item in houses\">\n" +
+    "    <a href=\"\" class=\"status\">{{ item.status|houseStatus }}</a>\n" +
+    "    <span class=\"address\">{{ item.address }}</span>\n" +
+    "  </li>\n" +
+    "</ul>\n" +
+    "<div class=\"correction\">\n" +
+    "  <p class=\"small\">房间信息不对？</p>\n" +
+    "  <p class=\"small\">请联系客服确认：<a href=\"tel:01060898888\">010-6089-8888</a></p>\n" +
+    "</div>");
+}]);
 
 angular.module("modules/register/templates/captcha.html", []).run(["$templateCache", function($templateCache) {
   $templateCache.put("modules/register/templates/captcha.html",
@@ -41,9 +62,11 @@ angular.module("modules/register/templates/mobile.html", []).run(["$templateCach
 
 angular.module("modules/register/templates/register.html", []).run(["$templateCache", function($templateCache) {
   $templateCache.put("modules/register/templates/register.html",
-    "<div class=\"container-fluid\">\n" +
-    "  <div class=\"row\">\n" +
-    "    <div class=\"col-xs-12 col-sm-12\" ui-view></div>\n" +
+    "<div id=\"register\">\n" +
+    "  <div class=\"container-fluid\">\n" +
+    "    <div class=\"row\">\n" +
+    "      <div class=\"col-xs-12 col-sm-12\" ui-view></div>\n" +
+    "    </div>\n" +
     "  </div>\n" +
     "</div>");
 }]);
@@ -60,7 +83,7 @@ angular.module("modules/register/templates/success.html", []).run(["$templateCac
 
 angular.module("modules/welcome/templates/home.html", []).run(["$templateCache", function($templateCache) {
   $templateCache.put("modules/welcome/templates/home.html",
-    "<section id=\"welcome\">\n" +
+    "<div id=\"welcome\">\n" +
     "  <header id=\"header\">\n" +
     "    <span class=\"glyphicon glyphicon-map-marker\"></span>\n" +
     "    <span class=\"city\">北京</span>\n" +
@@ -80,5 +103,5 @@ angular.module("modules/welcome/templates/home.html", []).run(["$templateCache",
     "      </div>\n" +
     "    </div>\n" +
     "  </div>\n" +
-    "</section>");
+    "</div>");
 }]);

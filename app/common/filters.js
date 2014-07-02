@@ -15,5 +15,5 @@ app.filter('group', function () {
       items.$rows = rows;
     }
     return items && items.$rows;
-  }
+  };
 });

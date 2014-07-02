@@ -5,7 +5,7 @@ var registerModule = angular.module('registerModule', ['ui.router', 'ui.bootstra
 registerModule.config(['$stateProvider', '$urlRouterProvider',
   function ($stateProvider, $urlRouterProvider) {
 
-    $urlRouterProvider.when("/register", "/register/step1");
+    $urlRouterProvider.when("/register", "/register/mobile");
 
     $stateProvider
       .state('register', {
@@ -14,12 +14,12 @@ registerModule.config(['$stateProvider', '$urlRouterProvider',
         templateUrl: "modules/register/templates/register.html"
       })
       .state('register.mobile', {
-        url: "/step1",
+        url: "/mobile",
         controller: 'mobileController',
         templateUrl: "modules/register/templates/mobile.html"
       })
       .state('register.captcha', {
-        url: "/step2",
+        url: "/verify",
         controller: 'captchaController',
         templateUrl: "modules/register/templates/captcha.html"
       })

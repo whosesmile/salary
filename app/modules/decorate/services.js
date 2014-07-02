@@ -1,13 +1,13 @@
 /* global welcomeModule:true */
 
-welcomeModule.factory('welcomeService', ['$http',
+decorateModule.factory('decorateService', ['$http',
   function ($http) {
 
     return {
 
-      getCatagory: function () {
+      getHouses: function () {
         return $http({
-          url: 'mock/welcome/catagory.json',
+          url: 'mock/decorate/houses.json',
           method: 'get'
         });
       }
