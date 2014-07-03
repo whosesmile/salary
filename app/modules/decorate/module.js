@@ -5,11 +5,11 @@ var decorateModule = angular.module('decorateModule', ['ui.router', 'ui.bootstra
 decorateModule.config(['$stateProvider', '$urlRouterProvider',
   function ($stateProvider, $urlRouterProvider) {
 
-  	$urlRouterProvider.when('/decorate', '/decorate/houses');
+    $urlRouterProvider.when('/decorate', '/decorate/houses');
 
     $stateProvider
       .state('decorate', {
-      	abstract: true,
+        abstract: true,
         url: "/decorate",
         templateUrl: "modules/decorate/templates/decorate.html"
       })

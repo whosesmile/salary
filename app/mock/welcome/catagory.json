@@ -1,7 +1,7 @@
 {
   "code": 200,
   "data": {
-    "list": [{
+    "catagory": [{
       "name": "注册流程",
       "href": "register"
     }, {

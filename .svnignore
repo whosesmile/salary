@@ -1,0 +1,16 @@
+.DS_Store
+.sass-cache
+.idea
+*.log
+*.pid
+*.seed
+pids
+temp
+build
+node_modules
+bower_components
+$RECYCLE.BIN
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+lib-covcoverage

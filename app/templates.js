@@ -9,15 +9,23 @@ angular.module("modules/decorate/templates/decorate.html", []).run(["$templateCa
 
 angular.module("modules/decorate/templates/houses.html", []).run(["$templateCache", function($templateCache) {
   $templateCache.put("modules/decorate/templates/houses.html",
-    "<ul class=\"list-unstyled houses\">\n" +
-    "  <li ng-repeat=\"item in houses\">\n" +
-    "    <a href=\"\" class=\"status\">{{ item.status|houseStatus }}</a>\n" +
-    "    <span class=\"address\">{{ item.address }}</span>\n" +
-    "  </li>\n" +
-    "</ul>\n" +
-    "<div class=\"correction\">\n" +
-    "  <p class=\"small\">房间信息不对？</p>\n" +
-    "  <p class=\"small\">请联系客服确认：<a href=\"tel:01060898888\">010-6089-8888</a></p>\n" +
+    "<div class=\"have-house\" ng-if=\"houses.length > 0\">\n" +
+    "  <ul class=\"list-unstyled houses\">\n" +
+    "    <li ng-repeat=\"item in houses\">\n" +
+    "      <a href=\"\" class=\"status\">{{ item.status|houseStatus }}</a>\n" +
+    "      <span class=\"address\">{{ item.address }}</span>\n" +
+    "    </li>\n" +
+    "  </ul>\n" +
+    "  <div class=\"correction\">\n" +
+    "    <p class=\"small\">房间信息不对？</p>\n" +
+    "    <p class=\"small\">请联系客服确认：<a href=\"tel:01060898888\">010-60898888</a></p>\n" +
+    "  </div>\n" +
+    "</div>\n" +
+    "<div class=\"havent-house\" ng-if=\"houses.length === 0\">\n" +
+    "  <div class=\"correction\">\n" +
+    "    <p class=\"small\">啊哦，系统未搜索到与您相关的房间信息~ <br />其实您有相关的房间？</p>\n" +
+    "    <p class=\"small\">请联系客服确认：<a href=\"tel:01060898888\">010-60898888</a></p>\n" +
+    "  </div>\n" +
     "</div>");
 }]);
 

@@ -6,7 +6,7 @@ decorateModule.controller('housesController', ['$scope', '$state', 'decorateServ
 
     // 请求房子
     service.getHouses().then(function (res) {
-      $scope.houses = res.list;
+      $scope.houses = res.houses;
     }, function () {
       //
     });
