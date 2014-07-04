@@ -9,6 +9,8 @@ module.exports = function (grunt) {
     // Metadata.
     pkg: grunt.file.readJSON('package.json'),
 
+    bower: grunt.file.readJSON('.bowerrc'),
+
     config: {
       folder: 'temp'
     },
@@ -48,6 +50,14 @@ module.exports = function (grunt) {
       options: {
         banner: '<%= banner %>',
         stripBanners: true
+      },
+      dep: {
+        src: ['<%= bower.directory %>/jquery/dist/jquery.min.js',
+          '<%= bower.directory %>/angular/angular.min.js',
+          '<%= bower.directory %>/angular-ui-router/release/angular-ui-router.min.js',
+          '<%= bower.directory %>/angular-bootstrap/ui-bootstrap-tpls.min.js'
+        ],
+        dest: '<%= config.folder %>/dependencies.js' // ^ ^
       },
       dev: {
         src: ['app/app.js', 'app/common/**/*.js', 'app/modules/**/module.js', 'app/modules/**/*.js', 'app/templates.js'],
@@ -92,6 +102,10 @@ module.exports = function (grunt) {
       html: {
         files: ['app/**/*.html'],
         tasks: ['html2js:dev', 'concat:dev']
+      },
+      index: {
+        files: ['app/index.html'],
+        tasks: ['copy:index']
       },
       dev: {
         files: ['app/**/*', '!app/**/*.js', '!app/**/*.html'],
@@ -145,11 +159,26 @@ module.exports = function (grunt) {
           dest: '<%= config.folder %>'
         }]
       },
-      html: {
+      dep: {
+        files: [{
+          expand: true,
+          flatten: true,
+          cwd: '<%= bower.directory %>',
+          src: ['bootstrap/dist/css/bootstrap.min.css', 'bootstrap/dist/css/bootstrap.css.map'],
+          dest: '<%= config.folder %>/dependencies/bootstrap/css/'
+        }, {
+          expand: true,
+          flatten: true,
+          cwd: '<%= bower.directory %>',
+          src: ['bootstrap/dist/fonts/*'],
+          dest: '<%= config.folder %>/dependencies/bootstrap/fonts/'
+        }]
+      },
+      index: {
         files: [{
           expand: true,
           cwd: 'app',
-          src: ['**/*.html'],
+          src: ['index.html'],
           dest: '<%= config.folder %>'
         }]
       },
@@ -171,12 +200,12 @@ module.exports = function (grunt) {
   // 将watch放在connect后边, 同时不要设定connect的keepalive
   grunt.registerTask('default', function () {
     grunt.config('config.folder', 'temp');
-    grunt.task.run(['clean:dev', 'copy:dev', 'html2js:dev', 'concat:dev', 'connect:dev', 'watch']);
+    grunt.task.run(['clean:dev', 'copy:dev', 'copy:dep', 'html2js:dev', 'concat:dep', 'concat:dev', 'connect:dev', 'watch']);
   });
 
   grunt.registerTask('dist', function () {
     grunt.config('config.folder', 'dist');
-    grunt.task.run(['clean:dev', 'copy:dev', 'html2js:dev', 'uglify:dev', 'connect:dev', 'watch']);
+    grunt.task.run(['clean:dev', 'copy:dev', 'copy:dep', 'html2js:dev', 'concat:dep', 'uglify:dev', 'connect:dev', 'watch']);
   });
 
 };

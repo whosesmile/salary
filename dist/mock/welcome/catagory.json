@@ -1,0 +1,15 @@
+{
+  "code": 200,
+  "data": {
+    "catagory": [{
+      "name": "注册流程",
+      "href": "register"
+    }, {
+      "name": "装修手续",
+      "href": "decorate"
+    }, {
+      "name": "社区小喇叭",
+      "href": ""
+    }]
+  }
+}
