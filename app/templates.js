@@ -1,4 +1,4 @@
-angular.module('templates', ['modules/decorate/templates/decorate.html', 'modules/decorate/templates/houses.html', 'modules/register/templates/captcha.html', 'modules/register/templates/failure.html', 'modules/register/templates/mobile.html', 'modules/register/templates/register.html', 'modules/register/templates/success.html', 'modules/welcome/templates/home.html']);
+angular.module('templates', ['modules/decorate/templates/decorate.html', 'modules/decorate/templates/houses.html', 'modules/decorate/templates/progress.html', 'modules/register/templates/captcha.html', 'modules/register/templates/failure.html', 'modules/register/templates/mobile.html', 'modules/register/templates/register.html', 'modules/register/templates/success.html', 'modules/welcome/templates/home.html']);
 
 angular.module("modules/decorate/templates/decorate.html", []).run(["$templateCache", function($templateCache) {
   $templateCache.put("modules/decorate/templates/decorate.html",
@@ -12,8 +12,10 @@ angular.module("modules/decorate/templates/houses.html", []).run(["$templateCach
     "<div class=\"have-house\" ng-if=\"houses.length > 0\">\n" +
     "  <ul class=\"list-unstyled houses\">\n" +
     "    <li ng-repeat=\"item in houses\">\n" +
-    "      <a href=\"\" class=\"status\">{{ item.status|houseStatus }}</a>\n" +
-    "      <span class=\"address\">{{ item.address }}</span>\n" +
+    "      <a href=\"\">\n" +
+    "        <span class=\"status text-muted\">{{ item.status|houseStatus }}</span>\n" +
+    "        <span class=\"address\">{{ item.address }}</span>\n" +
+    "      </a>\n" +
     "    </li>\n" +
     "  </ul>\n" +
     "  <div class=\"correction\">\n" +
@@ -27,6 +29,11 @@ angular.module("modules/decorate/templates/houses.html", []).run(["$templateCach
     "    <p class=\"small\">请联系客服确认：<a href=\"tel:01060898888\">010-60898888</a></p>\n" +
     "  </div>\n" +
     "</div>");
+}]);
+
+angular.module("modules/decorate/templates/progress.html", []).run(["$templateCache", function($templateCache) {
+  $templateCache.put("modules/decorate/templates/progress.html",
+    "progress");
 }]);
 
 angular.module("modules/register/templates/captcha.html", []).run(["$templateCache", function($templateCache) {

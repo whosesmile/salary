@@ -1,8 +1,10 @@
 <div class="have-house" ng-if="houses.length > 0">
   <ul class="list-unstyled houses">
     <li ng-repeat="item in houses">
-      <a href="" class="status">{{ item.status|houseStatus }}</a>
-      <span class="address">{{ item.address }}</span>
+      <a href="">
+        <span class="status text-muted">{{ item.status|houseStatus }}</span>
+        <span class="address">{{ item.address }}</span>
+      </a>
     </li>
   </ul>
   <div class="correction">

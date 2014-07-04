@@ -1,6 +1,6 @@
 /* global decorateModule:true */
 
-// 输入手机
+// 列出房产列表
 decorateModule.controller('housesController', ['$scope', '$state', 'decorateService',
   function ($scope, $state, service) {
 
@@ -11,5 +11,12 @@ decorateModule.controller('housesController', ['$scope', '$state', 'decorateServ
       //
     });
 
+  }
+]);
+
+// 进度
+decorateModule.controller('progressController', ['$scope', '$state', 'decorateService',
+  function ($scope, $state, service) {
+  	
   }
 ]);

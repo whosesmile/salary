@@ -17,6 +17,11 @@ decorateModule.config(['$stateProvider', '$urlRouterProvider',
         url: "/houses",
         controller: 'housesController',
         templateUrl: "modules/decorate/templates/houses.html"
+      })
+      .state('decorate.progress', {
+        url: "/houses",
+        controller: 'progressController',
+        templateUrl: "modules/decorate/templates/progress.html"
       });
   }
 ]);

@@ -4,11 +4,11 @@
     "houses": [{
       "roomId": 1,
       "address": "北京像素国际 10栋1单元1601室",
-      "status": 1
+      "status": 0
     }, {
-      "roomId": 2,
+      "roomId": 1,
       "address": "北京时代天街 10栋1单元1601室",
-      "status": 2
+      "status": 1
     }, {
       "roomId": 3,
       "address": "北京选特嘉园 10栋1单元1601室",
