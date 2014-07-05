@@ -1,12 +1,12 @@
-<div class="have-house" ng-if="groups.length > 0">
-  <dl class="terms" ng-repeat="group in groups">
-    <dt class="small text-light">{{ group.community }}</dt>
-    <dd ng-repeat="house in group.houses">
+<div class="have-house" ng-if="!(groups|empty)">
+  <dl class="terms" ng-repeat="(community, houses) in groups">
+    <dt class="small text-light">{{ community }}</dt>
+    <dd ng-repeat="house in houses">
       <a class="desc" ng-if="house.decorateId" ui-sref="decorate.progress({decorateId: house.decorateId})">
         <span class="status pull-right" ng-class="{'text-muted': house.status === 2}">{{ house.status|houseStatus }}</span>
         <span class="apartment text-default">{{ house.apartment }}</span>
       </a>
-      <a class="desc" ng-if="!house.decorateId" ui-sref="decorate.houses">
+      <a class="desc" ng-if="!house.decorateId" ui-sref="decorate.request({houseId: house.houseId})">
         <span class="status pull-right" ng-class="{'text-muted': house.status === 2}">{{ house.status|houseStatus }}</span>
         <span class="apartment text-default">{{ house.apartment }}</span>
       </a>
@@ -17,7 +17,7 @@
     <p>请联系客服确认：<a href="tel:01060898888">010-60898888</a></p>
   </div>
 </div>
-<div class="havent-house" ng-if="groups.length === 0">
+<div class="havent-house" ng-if="groups|empty">
   <div class="correction small">
     <p>啊哦，系统未搜索到与您相关的房间信息~ <br />其实您有相关的房间？</p>
     <p>请联系客服确认：<a href="tel:01060898888">010-60898888</a></p>

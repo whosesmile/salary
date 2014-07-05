@@ -1,4 +1,4 @@
-angular.module('templates', ['modules/decorate/templates/decorate-progress.partial.html', 'modules/decorate/templates/decorate.html', 'modules/decorate/templates/houses.html', 'modules/decorate/templates/progress.html', 'modules/register/templates/captcha.html', 'modules/register/templates/failure.html', 'modules/register/templates/mobile.html', 'modules/register/templates/register.html', 'modules/register/templates/success.html', 'modules/welcome/templates/home.html']);
+angular.module('templates', ['modules/decorate/templates/decorate-progress.partial.html', 'modules/decorate/templates/decorate.html', 'modules/decorate/templates/houses.html', 'modules/decorate/templates/progress.html', 'modules/decorate/templates/request.html', 'modules/register/templates/captcha.html', 'modules/register/templates/failure.html', 'modules/register/templates/mobile.html', 'modules/register/templates/register.html', 'modules/register/templates/success.html', 'modules/welcome/templates/home.html']);
 
 angular.module("modules/decorate/templates/decorate-progress.partial.html", []).run(["$templateCache", function($templateCache) {
   $templateCache.put("modules/decorate/templates/decorate-progress.partial.html",
@@ -27,15 +27,15 @@ angular.module("modules/decorate/templates/decorate.html", []).run(["$templateCa
 
 angular.module("modules/decorate/templates/houses.html", []).run(["$templateCache", function($templateCache) {
   $templateCache.put("modules/decorate/templates/houses.html",
-    "<div class=\"have-house\" ng-if=\"groups.length > 0\">\n" +
-    "  <dl class=\"terms\" ng-repeat=\"group in groups\">\n" +
-    "    <dt class=\"small text-light\">{{ group.community }}</dt>\n" +
-    "    <dd ng-repeat=\"house in group.houses\">\n" +
+    "<div class=\"have-house\" ng-if=\"!(groups|empty)\">\n" +
+    "  <dl class=\"terms\" ng-repeat=\"(community, houses) in groups\">\n" +
+    "    <dt class=\"small text-light\">{{ community }}</dt>\n" +
+    "    <dd ng-repeat=\"house in houses\">\n" +
     "      <a class=\"desc\" ng-if=\"house.decorateId\" ui-sref=\"decorate.progress({decorateId: house.decorateId})\">\n" +
     "        <span class=\"status pull-right\" ng-class=\"{'text-muted': house.status === 2}\">{{ house.status|houseStatus }}</span>\n" +
     "        <span class=\"apartment text-default\">{{ house.apartment }}</span>\n" +
     "      </a>\n" +
-    "      <a class=\"desc\" ng-if=\"!house.decorateId\" ui-sref=\"decorate.houses\">\n" +
+    "      <a class=\"desc\" ng-if=\"!house.decorateId\" ui-sref=\"decorate.request({houseId: house.houseId})\">\n" +
     "        <span class=\"status pull-right\" ng-class=\"{'text-muted': house.status === 2}\">{{ house.status|houseStatus }}</span>\n" +
     "        <span class=\"apartment text-default\">{{ house.apartment }}</span>\n" +
     "      </a>\n" +
@@ -46,7 +46,7 @@ angular.module("modules/decorate/templates/houses.html", []).run(["$templateCach
     "    <p>请联系客服确认：<a href=\"tel:01060898888\">010-60898888</a></p>\n" +
     "  </div>\n" +
     "</div>\n" +
-    "<div class=\"havent-house\" ng-if=\"groups.length === 0\">\n" +
+    "<div class=\"havent-house\" ng-if=\"groups|empty\">\n" +
     "  <div class=\"correction small\">\n" +
     "    <p>啊哦，系统未搜索到与您相关的房间信息~ <br />其实您有相关的房间？</p>\n" +
     "    <p>请联系客服确认：<a href=\"tel:01060898888\">010-60898888</a></p>\n" +
@@ -75,6 +75,11 @@ angular.module("modules/decorate/templates/progress.html", []).run(["$templateCa
     "    <decorate-progress stage=\"after\" items=\"progress\">在线申请验收&amp;押金退款</decorate-progress>\n" +
     "  </dl>\n" +
     "</div>");
+}]);
+
+angular.module("modules/decorate/templates/request.html", []).run(["$templateCache", function($templateCache) {
+  $templateCache.put("modules/decorate/templates/request.html",
+    "发起申请装修");
 }]);
 
 angular.module("modules/register/templates/captcha.html", []).run(["$templateCache", function($templateCache) {

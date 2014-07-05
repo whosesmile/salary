@@ -3,39 +3,32 @@
 // 列出房产列表
 decorateModule.controller('housesController', ['$scope', '$state', 'decorateService',
   function ($scope, $state, service) {
-
     // 请求房子
     service.getHouses().then(function (res) {
-
       // 根据房子的小区分组
-      var temp = {};
+      var groups = {};
       for (var i = 0; i < res.houses.length; i++) {
         var house = res.houses[i];
-        if (!temp[house.community]) {
-          temp[house.community] = [];
+        if (!groups[house.community]) {
+          groups[house.community] = [];
         }
-        temp[house.community].push(house);
-      }
-
-      var groups = [];
-      for (var community in temp) {
-        if (temp.hasOwnProperty(community)) {
-          groups.push({
-            community: community,
-            houses: temp[community]
-          });
-        }
+        groups[house.community].push(house);
       }
 
       $scope.groups = groups;
-    }, function () {
-      //
-    });
+    }, function () {});
 
   }
 ]);
 
-// 进度
+// 发起装修流程
+decorateModule.controller('requestController', ['$scope', '$state', '$stateParams', 'decorateService',
+  function ($scope, $state, $params, service) {
+    
+  }
+]);
+
+// 查看装修进度
 decorateModule.controller('progressController', ['$scope', '$state', '$stateParams', 'decorateService',
   function ($scope, $state, $params, service) {
     service.getProgress($params.decorateId).then(function (res) {

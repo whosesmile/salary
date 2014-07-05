@@ -46,6 +46,15 @@ app.config(['$httpProvider',
   }
 ]);
 
+// 全局事件
+app.run(['$rootScope',
+  function ($rootScope) {
+    $rootScope.$on('$stateChangeSuccess', function (event, state) {
+      $rootScope.isHome = state.name === 'home';
+    });
+  }
+]);
+
 // bootstrap
 angular.element(document).ready(function () {
   angular.bootstrap(document, ['app']);

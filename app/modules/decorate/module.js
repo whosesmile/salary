@@ -18,6 +18,11 @@ decorateModule.config(['$stateProvider', '$urlRouterProvider',
         controller: 'housesController',
         templateUrl: "modules/decorate/templates/houses.html"
       })
+      .state('decorate.request', {
+        url: "/request/:houseId",
+        controller: 'requestController',
+        templateUrl: "modules/decorate/templates/request.html"
+      })
       .state('decorate.progress', {
         url: "/progress/:decorateId",
         controller: 'progressController',

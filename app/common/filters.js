@@ -43,3 +43,10 @@ app.filter('group', function () {
     return items.$rows;
   };
 });
+
+// 判断是否是空白对象
+app.filter('empty', function () {
+  return function (obj) {
+    return !obj || angular.equals({}, obj) || angular.equals([], obj);
+  };
+});
