@@ -2,38 +2,90 @@ angular.module('templates', ['modules/decorate/templates/decorate.html', 'module
 
 angular.module("modules/decorate/templates/decorate.html", []).run(["$templateCache", function($templateCache) {
   $templateCache.put("modules/decorate/templates/decorate.html",
-    "<div id=\"decorate\">\n" +
+    "<div id=\"decorate\" class=\"wrapper\">\n" +
     "  <div ui-view></div>\n" +
     "</div>");
 }]);
 
 angular.module("modules/decorate/templates/houses.html", []).run(["$templateCache", function($templateCache) {
   $templateCache.put("modules/decorate/templates/houses.html",
-    "<div class=\"have-house\" ng-if=\"houses.length > 0\">\n" +
-    "  <ul class=\"list-unstyled houses\">\n" +
-    "    <li ng-repeat=\"item in houses\">\n" +
-    "      <a href=\"\">\n" +
-    "        <span class=\"status text-muted\">{{ item.status|houseStatus }}</span>\n" +
-    "        <span class=\"address\">{{ item.address }}</span>\n" +
+    "<div class=\"have-house\" ng-if=\"groups.length > 0\">\n" +
+    "  <dl class=\"terms\" ng-repeat=\"group in groups\">\n" +
+    "    <dt class=\"small text-light\">{{ group.community }}</dt>\n" +
+    "    <dd ng-repeat=\"house in group.houses\">\n" +
+    "      <a class=\"desc\" ui-sref=\"decorate.progress({houseId: house.houseId})\">\n" +
+    "        <span class=\"status pull-right\" ng-class=\"{'text-muted': house.status === 2}\">{{ house.status|houseStatus }}</span>\n" +
+    "        <span class=\"apartment text-default\">{{ house.apartment }}</span>\n" +
     "      </a>\n" +
-    "    </li>\n" +
-    "  </ul>\n" +
-    "  <div class=\"correction\">\n" +
-    "    <p class=\"small\">房间信息不对？</p>\n" +
-    "    <p class=\"small\">请联系客服确认：<a href=\"tel:01060898888\">010-60898888</a></p>\n" +
+    "    </dd>\n" +
+    "  </dl>\n" +
+    "  <div class=\"correction small text-muted\">\n" +
+    "    <p>房间信息不对？</p>\n" +
+    "    <p>请联系客服确认：<a href=\"tel:01060898888\">010-60898888</a></p>\n" +
     "  </div>\n" +
     "</div>\n" +
-    "<div class=\"havent-house\" ng-if=\"houses.length === 0\">\n" +
-    "  <div class=\"correction\">\n" +
-    "    <p class=\"small\">啊哦，系统未搜索到与您相关的房间信息~ <br />其实您有相关的房间？</p>\n" +
-    "    <p class=\"small\">请联系客服确认：<a href=\"tel:01060898888\">010-60898888</a></p>\n" +
+    "<div class=\"havent-house\" ng-if=\"groups.length === 0\">\n" +
+    "  <div class=\"correction small\">\n" +
+    "    <p>啊哦，系统未搜索到与您相关的房间信息~ <br />其实您有相关的房间？</p>\n" +
+    "    <p>请联系客服确认：<a href=\"tel:01060898888\">010-60898888</a></p>\n" +
     "  </div>\n" +
-    "</div>");
+    "</div>\n" +
+    "<!-- <div class=\"container-fluid full-width\" style=\"position:absolute;bottom:10px;\">\n" +
+    "  <div class=\"row\">\n" +
+    "    <div class=\"col-xs-12 col-sm-12\">\n" +
+    "      <button class=\"btn btn-primary full-width\">测试按钮</button>\n" +
+    "    </div>\n" +
+    "  </div>\n" +
+    "</div> -->");
 }]);
 
 angular.module("modules/decorate/templates/progress.html", []).run(["$templateCache", function($templateCache) {
   $templateCache.put("modules/decorate/templates/progress.html",
-    "progress");
+    "<div class=\"have-house\">\n" +
+    "  <dl class=\"terms\">\n" +
+    "    <dt class=\"small text-muted\">北京时代天街10栋1单元1601室 装修单</dt>\n" +
+    "    <dd>\n" +
+    "      <div class=\"desc\">\n" +
+    "        <span class=\"status pull-right text-muted\">已办理</span>\n" +
+    "        <span class=\"apartment text-default\">在线提交装修许可申请</span>\n" +
+    "      </div>\n" +
+    "      <ul class=\"list-unstyled text-muted small\">\n" +
+    "        <li class=\"clearfix\">\n" +
+    "          <span class=\"pull-left\">2014-06-30 03:15</span>\n" +
+    "          <span class=\"pull-right\">待装修公司握手</span>\n" +
+    "        </li>\n" +
+    "        <li class=\"clearfix\">\n" +
+    "          <span class=\"pull-left\">2014-06-30 03:15</span>\n" +
+    "          <span class=\"pull-right\">待提交图纸</span>\n" +
+    "        </li>\n" +
+    "        <li class=\"clearfix\">\n" +
+    "          <span class=\"pull-left\">2014-06-30 03:15</span>\n" +
+    "          <span class=\"pull-right\">图纸审核中</span>\n" +
+    "        </li>\n" +
+    "        <li class=\"clearfix\">\n" +
+    "          <span class=\"pull-left\">2014-06-30 03:15</span>\n" +
+    "          <span class=\"pull-right\">审核通过代办许可</span>\n" +
+    "        </li>\n" +
+    "      </ul>\n" +
+    "    </dd>\n" +
+    "  </dl>\n" +
+    "  <dl class=\"terms\">\n" +
+    "    <dd>\n" +
+    "      <div class=\"desc\">\n" +
+    "        <span class=\"status pull-right text-muted\">已办理</span>\n" +
+    "        <span class=\"apartment\">现场办理装修许可</span>\n" +
+    "      </div>\n" +
+    "    </dd>\n" +
+    "  </dl>\n" +
+    "  <dl class=\"terms\">\n" +
+    "    <dd>\n" +
+    "      <div class=\"desc\">\n" +
+    "        <span class=\"status pull-right text-muted\">已办理</span>\n" +
+    "        <span class=\"apartment\">在线申请验收&amp;押金退款</span>\n" +
+    "      </div>\n" +
+    "    </dd>\n" +
+    "  </dl>\n" +
+    "</div>");
 }]);
 
 angular.module("modules/register/templates/captcha.html", []).run(["$templateCache", function($templateCache) {
@@ -98,7 +150,7 @@ angular.module("modules/register/templates/success.html", []).run(["$templateCac
 
 angular.module("modules/welcome/templates/home.html", []).run(["$templateCache", function($templateCache) {
   $templateCache.put("modules/welcome/templates/home.html",
-    "<div id=\"welcome\">\n" +
+    "<div id=\"welcome\" style=\"background:#FFF\">\n" +
     "  <header id=\"header\">\n" +
     "    <span class=\"glyphicon glyphicon-map-marker\"></span>\n" +
     "    <span class=\"city\">北京</span>\n" +

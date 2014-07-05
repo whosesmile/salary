@@ -6,7 +6,25 @@ decorateModule.controller('housesController', ['$scope', '$state', 'decorateServ
 
     // 请求房子
     service.getHouses().then(function (res) {
-      $scope.houses = res.houses;
+
+      // 根据房子的小区分组
+      var temp = {};
+      for (var i = 0; i < res.houses.length; i++) {
+        var house = res.houses[i];
+        if (!temp[house.community]) {
+          temp[house.community] = [];
+        }
+        temp[house.community].push(house);
+      }
+
+      var groups = [];
+      for (var community in temp) {
+        if (temp.hasOwnProperty(community)) {
+          groups.push({community: community, houses: temp[community]});
+        }
+      }
+
+      $scope.groups = groups;
     }, function () {
       //
     });
@@ -17,6 +35,6 @@ decorateModule.controller('housesController', ['$scope', '$state', 'decorateServ
 // 进度
 decorateModule.controller('progressController', ['$scope', '$state', 'decorateService',
   function ($scope, $state, service) {
-  	
+
   }
 ]);

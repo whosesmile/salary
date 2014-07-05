@@ -1,4 +1,4 @@
-/* global welcomeModule:true */
+/* global decorateModule:true */
 
 decorateModule.factory('decorateService', ['$http',
   function ($http) {

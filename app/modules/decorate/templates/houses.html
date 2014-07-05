@@ -1,20 +1,28 @@
-<div class="have-house" ng-if="houses.length > 0">
-  <ul class="list-unstyled houses">
-    <li ng-repeat="item in houses">
-      <a href="">
-        <span class="status text-muted">{{ item.status|houseStatus }}</span>
-        <span class="address">{{ item.address }}</span>
+<div class="have-house" ng-if="groups.length > 0">
+  <dl class="terms" ng-repeat="group in groups">
+    <dt class="small text-light">{{ group.community }}</dt>
+    <dd ng-repeat="house in group.houses">
+      <a class="desc" ui-sref="decorate.progress({houseId: house.houseId})">
+        <span class="status pull-right" ng-class="{'text-muted': house.status === 2}">{{ house.status|houseStatus }}</span>
+        <span class="apartment text-default">{{ house.apartment }}</span>
       </a>
-    </li>
-  </ul>
-  <div class="correction">
-    <p class="small">房间信息不对？</p>
-    <p class="small">请联系客服确认：<a href="tel:01060898888">010-60898888</a></p>
+    </dd>
+  </dl>
+  <div class="correction small text-muted">
+    <p>房间信息不对？</p>
+    <p>请联系客服确认：<a href="tel:01060898888">010-60898888</a></p>
   </div>
 </div>
-<div class="havent-house" ng-if="houses.length === 0">
-  <div class="correction">
-    <p class="small">啊哦，系统未搜索到与您相关的房间信息~ <br />其实您有相关的房间？</p>
-    <p class="small">请联系客服确认：<a href="tel:01060898888">010-60898888</a></p>
+<div class="havent-house" ng-if="groups.length === 0">
+  <div class="correction small">
+    <p>啊哦，系统未搜索到与您相关的房间信息~ <br />其实您有相关的房间？</p>
+    <p>请联系客服确认：<a href="tel:01060898888">010-60898888</a></p>
   </div>
 </div>
+<!-- <div class="container-fluid full-width" style="position:absolute;bottom:10px;">
+  <div class="row">
+    <div class="col-xs-12 col-sm-12">
+      <button class="btn btn-primary full-width">测试按钮</button>
+    </div>
+  </div>
+</div> -->

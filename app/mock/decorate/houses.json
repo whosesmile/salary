@@ -2,17 +2,35 @@
   "code": 200,
   "data": {
     "houses": [{
-      "roomId": 1,
-      "address": "北京像素国际 10栋1单元1601室",
+      "houseId": 310905,
+      "address": "北京时代天街 10栋1单元1601室",
+      "community": "北京时代天街",
+      "apartment": "10栋1单元1601室",
       "status": 0
     }, {
-      "roomId": 1,
+      "houseId": 310905,
       "address": "北京时代天街 10栋1单元1601室",
+      "community": "北京时代天街",
+      "apartment": "10栋1单元1601室",
       "status": 1
     }, {
-      "roomId": 3,
-      "address": "北京选特嘉园 10栋1单元1601室",
+      "houseId": 310905,
+      "address": "北京时代天街 10栋1单元1601室",
+      "community": "北京时代天街",
+      "apartment": "10栋1单元1601室",
       "status": 2
+    }, {
+      "houseId": 310905,
+      "address": "北京长楹天街 10栋1单元1601室",
+      "community": "北京长楹天街",
+      "apartment": "10栋1单元1601室",
+      "status": 1
+    }, {
+      "houseId": 310905,
+      "address": "北京像素国际 10栋1单元1601室",
+      "community": "北京像素国际",
+      "apartment": "10栋1单元1601室",
+      "status": 1
     }]
   }
 }

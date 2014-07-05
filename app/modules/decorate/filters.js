@@ -1,3 +1,5 @@
+/* global decorateModule:true */
+
 // 将房屋状态转换为可读文字
 decorateModule.filter('houseStatus', function () {
   var dict = {
