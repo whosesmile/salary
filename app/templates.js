@@ -31,7 +31,11 @@ angular.module("modules/decorate/templates/houses.html", []).run(["$templateCach
     "  <dl class=\"terms\" ng-repeat=\"group in groups\">\n" +
     "    <dt class=\"small text-light\">{{ group.community }}</dt>\n" +
     "    <dd ng-repeat=\"house in group.houses\">\n" +
-    "      <a class=\"desc\" ui-sref=\"decorate.progress({decorateId: house.decorateId})\">\n" +
+    "      <a class=\"desc\" ng-if=\"house.decorateId\" ui-sref=\"decorate.progress({decorateId: house.decorateId})\">\n" +
+    "        <span class=\"status pull-right\" ng-class=\"{'text-muted': house.status === 2}\">{{ house.status|houseStatus }}</span>\n" +
+    "        <span class=\"apartment text-default\">{{ house.apartment }}</span>\n" +
+    "      </a>\n" +
+    "      <a class=\"desc\" ng-if=\"!house.decorateId\" ui-sref=\"decorate.houses\">\n" +
     "        <span class=\"status pull-right\" ng-class=\"{'text-muted': house.status === 2}\">{{ house.status|houseStatus }}</span>\n" +
     "        <span class=\"apartment text-default\">{{ house.apartment }}</span>\n" +
     "      </a>\n" +

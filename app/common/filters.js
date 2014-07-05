@@ -31,15 +31,15 @@ app.filter('group', function () {
     // cache rows for angular dirty check
     if (!items.$rows) {
       var rows = [];
-      for (var i = 0; i < items.length; i++) {
-        if (i % cols === 0) {
+      for (var k = 0; k < items.length; k++) {
+        if (k % cols === 0) {
           rows.push([]);
         }
-        rows[rows.length - 1].push(items[i]);
+        rows[rows.length - 1].push(items[k]);
       }
       items.$rows = rows;
     }
-    
+
     return items.$rows;
   };
 });

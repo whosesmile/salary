@@ -2,7 +2,11 @@
   <dl class="terms" ng-repeat="group in groups">
     <dt class="small text-light">{{ group.community }}</dt>
     <dd ng-repeat="house in group.houses">
-      <a class="desc" ui-sref="decorate.progress({decorateId: house.decorateId})">
+      <a class="desc" ng-if="house.decorateId" ui-sref="decorate.progress({decorateId: house.decorateId})">
+        <span class="status pull-right" ng-class="{'text-muted': house.status === 2}">{{ house.status|houseStatus }}</span>
+        <span class="apartment text-default">{{ house.apartment }}</span>
+      </a>
+      <a class="desc" ng-if="!house.decorateId" ui-sref="decorate.houses">
         <span class="status pull-right" ng-class="{'text-muted': house.status === 2}">{{ house.status|houseStatus }}</span>
         <span class="apartment text-default">{{ house.apartment }}</span>
       </a>
