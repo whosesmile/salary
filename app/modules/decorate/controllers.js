@@ -20,7 +20,10 @@ decorateModule.controller('housesController', ['$scope', '$state', 'decorateServ
       var groups = [];
       for (var community in temp) {
         if (temp.hasOwnProperty(community)) {
-          groups.push({community: community, houses: temp[community]});
+          groups.push({
+            community: community,
+            houses: temp[community]
+          });
         }
       }
 
@@ -33,8 +36,12 @@ decorateModule.controller('housesController', ['$scope', '$state', 'decorateServ
 ]);
 
 // 进度
-decorateModule.controller('progressController', ['$scope', '$state', 'decorateService',
-  function ($scope, $state, service) {
-
+decorateModule.controller('progressController', ['$scope', '$state', '$stateParams', 'decorateService',
+  function ($scope, $state, $params, service) {
+    service.getProgress($params.decorateId).then(function (res) {
+      $scope.progress = res.progress;
+    }, function (rej) {
+      // 
+    });
   }
 ]);

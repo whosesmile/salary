@@ -1,0 +1,6 @@
+<ul class="list-unstyled text-light small" ng-if="group">
+  <li class="clearfix" ng-repeat="item in group">
+    <span class="pull-left">{{ item.time|date:'yyyy-MM-dd HH:mm' }}</span>
+    <span class="pull-right">{{ item.status|decorateStatus }}</span>
+  </li>
+</ul>
