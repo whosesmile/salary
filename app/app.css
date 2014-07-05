@@ -29,6 +29,7 @@ input.ng-invalid.ng-dirty:focus, textarea.ng-invalid.ng-dirty:focus { border-col
 #welcome #content div[class^="col-"] .category { display: block; }
 /* decorate */
 #decorate .terms { padding-top: 10px; margin-bottom: 5px; }
+#decorate .title { padding: 20px 15px 0; }
 #decorate .terms dt { padding: 10px 15px; font-weight: normal; }
 #decorate .terms dd { border-top: 1px solid #C8C8C8; background-color: #FFF; }
 #decorate .terms dd:last-child { border-bottom: 1px solid #C8C8C8; }

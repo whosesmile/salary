@@ -2,12 +2,20 @@ angular.module('templates', ['modules/decorate/templates/decorate-progress.parti
 
 angular.module("modules/decorate/templates/decorate-progress.partial.html", []).run(["$templateCache", function($templateCache) {
   $templateCache.put("modules/decorate/templates/decorate-progress.partial.html",
-    "<ul class=\"list-unstyled text-light small\" ng-if=\"group\">\n" +
-    "  <li class=\"clearfix\" ng-repeat=\"item in group\">\n" +
-    "    <span class=\"pull-left\">{{ item.time|date:'yyyy-MM-dd HH:mm' }}</span>\n" +
-    "    <span class=\"pull-right\">{{ item.status|decorateStatus }}</span>\n" +
-    "  </li>\n" +
-    "</ul>");
+    "<dd>\n" +
+    "  <a ui-sref=\"decorate.houses\" class=\"desc\">\n" +
+    "    <span class=\"status pull-right\" ng-hide=\"!action\" ng-class=\"{'text-light': muted}\">{{ action }}</span>\n" +
+    "    <span class=\"apartment text-default\" ng-transclude></span>\n" +
+    "  </a>\n" +
+    "  <ul class=\"list-unstyled text-muted small\" ng-if=\"group\">\n" +
+    "    <li class=\"clearfix\" ng-repeat=\"item in group\">\n" +
+    "      <span class=\"pull-left\">{{ item.time|date:'yyyy-MM-dd HH:mm' }}</span>\n" +
+    "      <span class=\"pull-right\">{{ item.status|decorateStatus }}</span>\n" +
+    "    </li>\n" +
+    "  </ul>\n" +
+    "</dd>\n" +
+    "\n" +
+    "");
 }]);
 
 angular.module("modules/decorate/templates/decorate.html", []).run(["$templateCache", function($templateCache) {
@@ -51,34 +59,16 @@ angular.module("modules/decorate/templates/houses.html", []).run(["$templateCach
 
 angular.module("modules/decorate/templates/progress.html", []).run(["$templateCache", function($templateCache) {
   $templateCache.put("modules/decorate/templates/progress.html",
-    "<div class=\"have-house\">\n" +
+    "<div class=\"decorate-progress\">\n" +
+    "  <div class=\"title small text-light\">北京时代天街10栋1单元1601室 装修单</div>\n" +
     "  <dl class=\"terms\">\n" +
-    "    <dt class=\"small text-muted\">北京时代天街10栋1单元1601室 装修单</dt>\n" +
-    "    <dd>\n" +
-    "      <a class=\"desc\">\n" +
-    "        <span class=\"status pull-right\">已办理</span>\n" +
-    "        <span class=\"apartment text-default\">在线提交装修许可申请</span>\n" +
-    "      </a>\n" +
-    "      <decorate-progress begin=\"S10\" end=\"S40\" items=\"progress\"></decorate-progress>\n" +
-    "    </dd>\n" +
+    "    <decorate-progress stage=\"before\" items=\"progress\">在线提交装修许可申请</decorate-progress>\n" +
     "  </dl>\n" +
     "  <dl class=\"terms\">\n" +
-    "    <dd>\n" +
-    "      <a class=\"desc\">\n" +
-    "        <span class=\"status pull-right\">已办理</span>\n" +
-    "        <span class=\"apartment text-default\">现场办理装修许可</span>\n" +
-    "      </a>\n" +
-    "      <decorate-progress begin=\"S50\" end=\"S50\" items=\"progress\"></decorate-progress>\n" +
-    "    </dd>\n" +
+    "    <decorate-progress stage=\"process\" items=\"progress\">现场办理装修许可</decorate-progress>\n" +
     "  </dl>\n" +
     "  <dl class=\"terms\">\n" +
-    "    <dd>\n" +
-    "      <a class=\"desc\">\n" +
-    "        <span class=\"status pull-right\">已办理</span>\n" +
-    "        <span class=\"apartment text-default\">在线申请验收&amp;押金退款</span>\n" +
-    "      </a>\n" +
-    "      <decorate-progress begin=\"S60\" end=\"S90\" items=\"progress\"></decorate-progress>\n" +
-    "    </dd>\n" +
+    "    <decorate-progress stage=\"after\" items=\"progress\">在线申请验收&amp;押金退款</decorate-progress>\n" +
     "  </dl>\n" +
     "</div>");
 }]);

@@ -32,13 +32,29 @@ decorateModule.filter('decorateStatus', function () {
   };
 });
 
-// // 将装修状态转换为可读文字
-// decorateModule.filter('decorateAction', function () {
-//   var dict = {
-    
-//   };
+// 将装修状态转换为可读文字
+decorateModule.filter('decorateGuide', function () {
+  var dict = {
+    before: {
+      "S10": "等待握手",
+      "S20": "提交图纸",
+      "S30": "审核中",
+      "S40": "已办理"
+    },
+    process: {
+      "S40": "查看",
+      "S50": "已办理"
+    },
+    after: {
+      "S50": "申请验收",
+      "S60": "申请中",
+      "S70": "审核中",
+      "S80": "申请退款",
+      "S90": "已办理"
+    }
+  };
 
-//   return function (status) {
-//     return dict[status.toUpperCase()] || '不明状况';
-//   };
-// });
+  return function (status, group) {
+    return dict[group][status] || '';
+  };
+});
