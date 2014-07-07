@@ -37,6 +37,29 @@ decorateModule.factory('decorateService', ['$http',
             id: id
           }
         });
+      },
+
+      getDecorate: function (id) {
+        return $http({
+          url: 'mock/decorate/decorate.json',
+          method: 'get',
+          params: {
+            id: id
+          }
+        });
+      },
+
+      // 发送装修申请
+      sendInvitation: function (houseId, decorateId, date) {
+        return $http({
+          url: 'mock/decorate/invitation.json',
+          method: 'post',
+          data: {
+            houseId: houseId,
+            decorateId: decorateId,
+            date: date
+          }
+        });
       }
 
     };

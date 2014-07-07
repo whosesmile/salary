@@ -22,11 +22,30 @@ decorateModule.controller('housesController', ['$scope', '$state', 'decorateServ
 ]);
 
 // 发起装修流程
-decorateModule.controller('requestController', ['$scope', '$state', '$stateParams', '$q', 'decorateService',
+decorateModule.controller('invitationController', ['$scope', '$state', '$stateParams', '$q', 'decorateService',
   function ($scope, $state, $params, $q, service) {
     $q.all([service.getHouse($params.houseId), service.getProviders()]).then(function (list) {
+      // 赋值房产信息和供应商信息
       $scope.house = list[0].house;
       $scope.providers = list[1].providers;
+
+      // 提交表单处理
+      $scope.submitRequest = function () {
+        service.sendInvitation($scope.house.id, $scope.provider.id, $scope.date).then(function (res) {
+          $state.go('decorate.prompt', {
+            decorateId: res.decorateId
+          });
+        }, function () {});
+      };
+    }, function () {});
+  }
+]);
+
+// 装修申请成功提示
+decorateModule.controller('promptController', ['$scope', '$state', '$stateParams', 'decorateService',
+  function ($scope, $state, $params, service) {
+    service.getDecorate($params.decorateId).then(function (res) {
+      $scope.decorate = res.decorate;
     }, function () {});
   }
 ]);

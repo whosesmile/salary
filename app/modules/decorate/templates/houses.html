@@ -4,11 +4,11 @@
     <dd ng-repeat="house in houses">
       <a class="desc" ng-if="house.decorateId" ui-sref="decorate.progress({decorateId: house.decorateId})">
         <span class="status pull-right" ng-class="{'text-muted': house.status === 2}">{{ house.status|houseStatus }}</span>
-        <span class="apartment text-default">{{ house.apartment }}</span>
+        <span class="apartment text-overflow text-default">{{ house.apartment }}</span>
       </a>
-      <a class="desc" ng-if="!house.decorateId" ui-sref="decorate.request({houseId: house.houseId})">
+      <a class="desc" ng-if="!house.decorateId" ui-sref="decorate.invitation({houseId: house.id})">
         <span class="status pull-right" ng-class="{'text-muted': house.status === 2}">{{ house.status|houseStatus }}</span>
-        <span class="apartment text-default">{{ house.apartment }}</span>
+        <span class="apartment text-overflow text-default">{{ house.apartment }}</span>
       </a>
     </dd>
   </dl>

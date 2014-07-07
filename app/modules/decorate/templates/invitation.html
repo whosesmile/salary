@@ -1,5 +1,5 @@
 <div class="request">
-  <form name="delegateForm">
+  <form name="delegateForm" ng-submit="submitRequest()">
     <dl class="terms">
       <dt class="small text-light">请选择委托的装修公司</dt>
       <dd class="select">
@@ -39,7 +39,7 @@
     <div class="container-fluid full-width" style="position:absolute;bottom:10px;">
       <div class="row">
         <div class="col-xs-12 col-sm-12">
-          <button type=""submit class="btn btn-primary full-width" ng-disabled="delegateForm.$invalid">提交</button>
+          <button type="submit" class="btn btn-primary full-width" ng-disabled="delegateForm.$invalid">提交</button>
         </div>
       </div>
     </div>
