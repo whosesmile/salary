@@ -1,1 +1,22 @@
-发起申请装修
+<div class="request">
+  <form name="delegateForm">
+    <dl class="terms">
+      <dt class="small text-light">请选择委托的装修公司</dt>
+      <dd class="select-wrapper">
+        <select class="form-control" ng-model="provider" ng-options="provider.name for provider in providers" required>
+          <option value="">请选择</option>
+        </select>
+      </dd>
+    </dl>
+    <div class="correction small">
+      <a ui-sref="decorate.reference">您想委托的装修公司不在列表？</a>
+    </div>
+    <div class="container-fluid full-width" style="position:absolute;bottom:10px;">
+      <div class="row">
+        <div class="col-xs-12 col-sm-12">
+          <button type=""submit class="btn btn-primary full-width" ng-disabled="delegateForm.$invalid">确定</button>
+        </div>
+      </div>
+    </div>
+  </form>
+</div>

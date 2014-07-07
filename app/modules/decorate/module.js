@@ -23,6 +23,11 @@ decorateModule.config(['$stateProvider', '$urlRouterProvider',
         controller: 'requestController',
         templateUrl: "modules/decorate/templates/request.html"
       })
+      .state('decorate.reference', {
+        url: "/reference",
+        controller: 'referenceController',
+        templateUrl: "modules/decorate/templates/reference.html"
+      })
       .state('decorate.progress', {
         url: "/progress/:decorateId",
         controller: 'progressController',

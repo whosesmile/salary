@@ -20,6 +20,13 @@ decorateModule.factory('decorateService', ['$http',
             decorateId: decorateId
           }
         });
+      },
+
+      getProviders: function() {
+        return $http({
+          url: 'mock/decorate/providers.json',
+          method: 'get'
+        });
       }
 
     };

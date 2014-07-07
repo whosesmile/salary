@@ -24,7 +24,9 @@ decorateModule.controller('housesController', ['$scope', '$state', 'decorateServ
 // 发起装修流程
 decorateModule.controller('requestController', ['$scope', '$state', '$stateParams', 'decorateService',
   function ($scope, $state, $params, service) {
-    
+    service.getProviders().then(function (res) {
+      $scope.providers = res.providers;
+    }, function () {});
   }
 ]);
 
@@ -33,8 +35,13 @@ decorateModule.controller('progressController', ['$scope', '$state', '$statePara
   function ($scope, $state, $params, service) {
     service.getProgress($params.decorateId).then(function (res) {
       $scope.progress = res.progress;
-    }, function (rej) {
-      // 
-    });
+    }, function () {});
+  }
+]);
+
+// 查看备案说明
+decorateModule.controller('referenceController', ['$scope', '$state', '$stateParams', 'decorateService',
+  function ($scope, $state, $params, service) {
+    // TODO
   }
 ]);

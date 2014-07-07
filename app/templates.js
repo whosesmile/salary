@@ -1,4 +1,4 @@
-angular.module('templates', ['modules/decorate/templates/decorate-progress.partial.html', 'modules/decorate/templates/decorate.html', 'modules/decorate/templates/houses.html', 'modules/decorate/templates/progress.html', 'modules/decorate/templates/request.html', 'modules/register/templates/captcha.html', 'modules/register/templates/failure.html', 'modules/register/templates/mobile.html', 'modules/register/templates/register.html', 'modules/register/templates/success.html', 'modules/welcome/templates/home.html']);
+angular.module('templates', ['modules/decorate/templates/decorate-progress.partial.html', 'modules/decorate/templates/decorate.html', 'modules/decorate/templates/houses.html', 'modules/decorate/templates/progress.html', 'modules/decorate/templates/reference.html', 'modules/decorate/templates/request.html', 'modules/register/templates/captcha.html', 'modules/register/templates/failure.html', 'modules/register/templates/mobile.html', 'modules/register/templates/register.html', 'modules/register/templates/success.html', 'modules/welcome/templates/home.html']);
 
 angular.module("modules/decorate/templates/decorate-progress.partial.html", []).run(["$templateCache", function($templateCache) {
   $templateCache.put("modules/decorate/templates/decorate-progress.partial.html",
@@ -51,14 +51,7 @@ angular.module("modules/decorate/templates/houses.html", []).run(["$templateCach
     "    <p>啊哦，系统未搜索到与您相关的房间信息~ <br />其实您有相关的房间？</p>\n" +
     "    <p>请联系客服确认：<a href=\"tel:01060898888\">010-60898888</a></p>\n" +
     "  </div>\n" +
-    "</div>\n" +
-    "<!-- <div class=\"container-fluid full-width\" style=\"position:absolute;bottom:10px;\">\n" +
-    "  <div class=\"row\">\n" +
-    "    <div class=\"col-xs-12 col-sm-12\">\n" +
-    "      <button class=\"btn btn-primary full-width\">测试按钮</button>\n" +
-    "    </div>\n" +
-    "  </div>\n" +
-    "</div> -->");
+    "</div>");
 }]);
 
 angular.module("modules/decorate/templates/progress.html", []).run(["$templateCache", function($templateCache) {
@@ -77,9 +70,60 @@ angular.module("modules/decorate/templates/progress.html", []).run(["$templateCa
     "</div>");
 }]);
 
+angular.module("modules/decorate/templates/reference.html", []).run(["$templateCache", function($templateCache) {
+  $templateCache.put("modules/decorate/templates/reference.html",
+    "<div id=\"reference\" class=\"inform\">\n" +
+    "  <div class=\"main text-light\">\n" +
+    "    <p>请了解以下龙湖社区供应商备案须知，尽快携带必须材料，来物业备案。</p>\n" +
+    "    <dl class=\"indent\">\n" +
+    "      <dt class=\"text-default\">请携带以下材料：</dt>\n" +
+    "      <dd>- 公司营业执照复印件</dd>\n" +
+    "      <dd>- 法人身份证复印件</dd>\n" +
+    "      <dd>- 法人手机号</dd>\n" +
+    "      <dd>- 现场负责人身份证原件及复印件</dd>\n" +
+    "      <dd>- 现场负责人手机号</dd>\n" +
+    "    </dl>\n" +
+    "    <dl>\n" +
+    "      <dt class=\"text-default\">请到这里来备案：</dt>\n" +
+    "      <dd>北京时代天街 客服中心</dd>\n" +
+    "      <dd>地址：北京市大兴区广平路3号B102</dd>\n" +
+    "      <dd>电话：<a href=\"tel:01060238899\">010-60238899</a></dd>\n" +
+    "    </dl>\n" +
+    "  </div>\n" +
+    "  <div class=\"container-fluid full-width\" style=\"position:absolute;bottom:10px;\">\n" +
+    "    <div class=\"row\">\n" +
+    "      <div class=\"col-xs-12 col-sm-12\">\n" +
+    "        <a type=\"\"submit class=\"btn btn-primary full-width\">将《备案须知》分享给装修公司</a>\n" +
+    "      </div>\n" +
+    "    </div>\n" +
+    "  </div>\n" +
+    "</div>");
+}]);
+
 angular.module("modules/decorate/templates/request.html", []).run(["$templateCache", function($templateCache) {
   $templateCache.put("modules/decorate/templates/request.html",
-    "发起申请装修");
+    "<div class=\"request\">\n" +
+    "  <form name=\"delegateForm\">\n" +
+    "    <dl class=\"terms\">\n" +
+    "      <dt class=\"small text-light\">请选择委托的装修公司</dt>\n" +
+    "      <dd class=\"select-wrapper\">\n" +
+    "        <select class=\"form-control\" ng-model=\"provider\" ng-options=\"provider.name for provider in providers\" required>\n" +
+    "          <option value=\"\">请选择</option>\n" +
+    "        </select>\n" +
+    "      </dd>\n" +
+    "    </dl>\n" +
+    "    <div class=\"correction small\">\n" +
+    "      <a ui-sref=\"decorate.reference\">您想委托的装修公司不在列表？</a>\n" +
+    "    </div>\n" +
+    "    <div class=\"container-fluid full-width\" style=\"position:absolute;bottom:10px;\">\n" +
+    "      <div class=\"row\">\n" +
+    "        <div class=\"col-xs-12 col-sm-12\">\n" +
+    "          <button type=\"\"submit class=\"btn btn-primary full-width\" ng-disabled=\"delegateForm.$invalid\">确定</button>\n" +
+    "        </div>\n" +
+    "      </div>\n" +
+    "    </div>\n" +
+    "  </form>\n" +
+    "</div>");
 }]);
 
 angular.module("modules/register/templates/captcha.html", []).run(["$templateCache", function($templateCache) {
