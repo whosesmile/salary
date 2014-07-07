@@ -29,7 +29,10 @@ app.config(['$httpProvider',
               var res = response.data;
               // 兼容旧数据格式
               res.data = res.data || {};
-              res.data.message = res.data.message || res.message;
+              if (res.data.message || res.message) {
+                res.data.message = res.data.message || res.message;
+              }
+
               return [0, 200].indexOf(res.code) !== -1 ? res.data : $q.reject(res.data);
             }
             return $q.when(response);

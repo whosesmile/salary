@@ -22,10 +22,11 @@ decorateModule.controller('housesController', ['$scope', '$state', 'decorateServ
 ]);
 
 // 发起装修流程
-decorateModule.controller('requestController', ['$scope', '$state', '$stateParams', 'decorateService',
-  function ($scope, $state, $params, service) {
-    service.getProviders().then(function (res) {
-      $scope.providers = res.providers;
+decorateModule.controller('requestController', ['$scope', '$state', '$stateParams', '$q', 'decorateService',
+  function ($scope, $state, $params, $q, service) {
+    $q.all([service.getHouse($params.houseId), service.getProviders()]).then(function (list) {
+      $scope.house = list[0].house;
+      $scope.providers = list[1].providers;
     }, function () {});
   }
 ]);

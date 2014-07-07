@@ -106,19 +106,44 @@ angular.module("modules/decorate/templates/request.html", []).run(["$templateCac
     "  <form name=\"delegateForm\">\n" +
     "    <dl class=\"terms\">\n" +
     "      <dt class=\"small text-light\">请选择委托的装修公司</dt>\n" +
-    "      <dd class=\"select-wrapper\">\n" +
-    "        <select class=\"form-control\" ng-model=\"provider\" ng-options=\"provider.name for provider in providers\" required>\n" +
+    "      <dd class=\"select\">\n" +
+    "        <select class=\"form-control\" name=\"provider\" ng-model=\"provider\" ng-options=\"provider.name for provider in providers\" required>\n" +
     "          <option value=\"\">请选择</option>\n" +
     "        </select>\n" +
     "      </dd>\n" +
     "    </dl>\n" +
-    "    <div class=\"correction small\">\n" +
+    "    <div ng-show=\"delegateForm.provider.$valid\">\n" +
+    "      <dl class=\"terms\">\n" +
+    "        <dt class=\"small text-light\">您的装修需求</dt>\n" +
+    "        <dd>\n" +
+    "          <input class=\"form-control\" name=\"date\" type=\"date\" ng-model=\"date\"  placeholder=\"选择预计开工的日期\" required />\n" +
+    "        </dd>\n" +
+    "      </dl>\n" +
+    "\n" +
+    "      <dl class=\"terms\">\n" +
+    "        <dt class=\"small text-light\">您的个人信息</dt>\n" +
+    "        <dd class=\"simulate-control clearfix\">\n" +
+    "          <span class=\"pull-left\">张三先生</span>\n" +
+    "          <span class=\"pull-right text-holder\">186****5297</span>\n" +
+    "        </dd>\n" +
+    "      </dl>\n" +
+    "\n" +
+    "      <dl class=\"terms\">\n" +
+    "        <dt class=\"small text-light\">您要装修的房间是</dt>\n" +
+    "        <dd class=\"simulate-control\">\n" +
+    "          {{ house.community }} {{ house.apartment }}\n" +
+    "        </dd>\n" +
+    "      </dl>\n" +
+    "    </div>\n" +
+    "\n" +
+    "    <div ng-hide=\"delegateForm.provider.$valid\" class=\"correction small\">\n" +
     "      <a ui-sref=\"decorate.reference\">您想委托的装修公司不在列表？</a>\n" +
     "    </div>\n" +
+    "\n" +
     "    <div class=\"container-fluid full-width\" style=\"position:absolute;bottom:10px;\">\n" +
     "      <div class=\"row\">\n" +
     "        <div class=\"col-xs-12 col-sm-12\">\n" +
-    "          <button type=\"\"submit class=\"btn btn-primary full-width\" ng-disabled=\"delegateForm.$invalid\">确定</button>\n" +
+    "          <button type=\"\"submit class=\"btn btn-primary full-width\" ng-disabled=\"delegateForm.$invalid\">提交</button>\n" +
     "        </div>\n" +
     "      </div>\n" +
     "    </div>\n" +

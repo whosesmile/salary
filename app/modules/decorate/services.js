@@ -22,10 +22,20 @@ decorateModule.factory('decorateService', ['$http',
         });
       },
 
-      getProviders: function() {
+      getProviders: function () {
         return $http({
           url: 'mock/decorate/providers.json',
           method: 'get'
+        });
+      },
+
+      getHouse: function (id) {
+        return $http({
+          url: 'mock/decorate/house.json',
+          method: 'get',
+          params: {
+            id: id
+          }
         });
       }
 

@@ -6,6 +6,7 @@ body.home { background-color: #FFFFFF; }
 .text-default { color: #333; }
 .text-light { color: #666; }
 .text-muted { color: #888; }
+.text-holder { color: #CCC; }
 .btn.disabled, .btn[disabled], fieldset[disabled] .btn { opacity: 1; filter: alpha(opacity=1); background: #AAA; color: #FFF; border-color: #AAA; }
 /* angular */
 input.ng-valid.ng-dirty, textarea.ng-valid.ng-dirty { border-color: #57A235; }
@@ -25,7 +26,7 @@ input.ng-invalid.ng-dirty:focus, textarea.ng-invalid.ng-dirty:focus { border-col
 /* reference */
 #reference .main { padding: 20px 15px; }
 #reference .main p { margin-bottom: 24px; }
-#reference .main .indent dd { padding-left: 15px  }
+#reference .main .indent dd { padding-left: 15px }
 /* welcome */
 #welcome { min-height: 100%; background-color: #FFF; }
 #welcome #header { border-bottom: 1px solid #C8C8C8; padding: 15px 10px; }
@@ -40,9 +41,11 @@ input.ng-invalid.ng-dirty:focus, textarea.ng-invalid.ng-dirty:focus { border-col
 #decorate .terms dt { padding: 10px 15px; font-weight: normal; }
 #decorate .terms dd { border-top: 1px solid #C8C8C8; background-color: #FFF; }
 #decorate .terms dd:last-child { border-bottom: 1px solid #C8C8C8; }
+#decorate .terms dd.simulate-control { padding: 6px 16px; }
 #decorate .terms dd .desc { display: block; padding: 10px 15px; }
 #decorate .terms .apartment { display: block; margin-right: 70px; text-overflow: ellipsis; white-space: nowrap; overflow: hidden; }
 #decorate .terms ul li { padding: 5px 15px; }
 #decorate .correction { margin: 20px 0 0 15px; }
-#decorate .select-wrapper { padding-left: 6px; padding-right: 6px; }
-#decorate .form-control { border: none; border-radius: 0x; -webkit-box-shadow: none; box-shadow: none; }
+#decorate .request dd { padding-left: 4px; padding-right: 4px; }
+#decorate .request dd.select { padding-left: 7px; padding-right: 7px; }
+#decorate .request .form-control { border: none; border-radius: 0x; -webkit-box-shadow: none; box-shadow: none; }
