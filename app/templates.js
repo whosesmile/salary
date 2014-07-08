@@ -1,4 +1,43 @@
-angular.module('templates', ['modules/decorate/templates/decorate-progress.partial.html', 'modules/decorate/templates/decorate.html', 'modules/decorate/templates/drawing.html', 'modules/decorate/templates/history.html', 'modules/decorate/templates/houses.html', 'modules/decorate/templates/invitation.html', 'modules/decorate/templates/notice-drawing.html', 'modules/decorate/templates/notice-initiate.html', 'modules/decorate/templates/progress.html', 'modules/decorate/templates/reference.html', 'modules/register/templates/captcha.html', 'modules/register/templates/failure.html', 'modules/register/templates/mobile.html', 'modules/register/templates/register.html', 'modules/register/templates/success.html', 'modules/welcome/templates/home.html']);
+angular.module('templates', ['modules/decorate/templates/confirm.html', 'modules/decorate/templates/decorate-progress.partial.html', 'modules/decorate/templates/decorate.html', 'modules/decorate/templates/drawing.html', 'modules/decorate/templates/history.html', 'modules/decorate/templates/houses.html', 'modules/decorate/templates/invitation.html', 'modules/decorate/templates/notice-drawing.html', 'modules/decorate/templates/notice-initiate.html', 'modules/decorate/templates/progress.html', 'modules/decorate/templates/reference.html', 'modules/register/templates/captcha.html', 'modules/register/templates/failure.html', 'modules/register/templates/mobile.html', 'modules/register/templates/register.html', 'modules/register/templates/success.html', 'modules/welcome/templates/home.html']);
+
+angular.module("modules/decorate/templates/confirm.html", []).run(["$templateCache", function($templateCache) {
+  $templateCache.put("modules/decorate/templates/confirm.html",
+    "<div id=\"reference\">\n" +
+    "  <div class=\"main text-light\">\n" +
+    "    <p>请和您委托的装修公司负责人共同到物业办理装修入场许可。需携带材料如下：</p>\n" +
+    "    <dl class=\"indent\">\n" +
+    "      <dt class=\"text-default\">您的个人信息材料：</dt>\n" +
+    "      <dd>- 身份证原件</dd>\n" +
+    "      <dd>- 购房合同</dd>\n" +
+    "    </dl>\n" +
+    "    <dl class=\"indent\">\n" +
+    "      <dt class=\"text-default\">装修公司信息材料：</dt>\n" +
+    "      <dd>- 营业执照</dd>\n" +
+    "      <dd>- 现场负责人身份证原件</dd>\n" +
+    "    </dl>\n" +
+    "    <dl class=\"indent\">\n" +
+    "      <dt class=\"text-default\">手续费用：</dt>\n" +
+    "      <dd>- 您需缴纳的费用合计为：￥6800.00</dd>\n" +
+    "      <dd>\n" +
+    "        <span class=\"tiny text-muted details\">\n" +
+    "          包括：\n" +
+    "          <span class=\"item\" ng-repeat=\"item in charge.deposit\">{{ item.name }} ￥{{ item.money|number:2 }}</span>\n" +
+    "          <span class=\"item\" ng-repeat=\"item in charge.expense\">{{ item.name }} ￥{{ item.money|number:2 }}</span>\n" +
+    "        </span>\n" +
+    "      </dd>\n" +
+    "    </dl>\n" +
+    "    <dl class=\"indent\">\n" +
+    "      <dt class=\"text-default\">现场需要您签字确认：</dt>\n" +
+    "      <dd>- 您的装修图纸</dd>\n" +
+    "      <dd>- 装修授权委托书</dd>\n" +
+    "      <dd>- 其他相关装修规定</dd>\n" +
+    "    </dl>\n" +
+    "  </div>\n" +
+    "  <div class=\"full-width\" style=\"position:absolute;bottom:10px;padding: 0 15px;\">\n" +
+    "    <a type=\"submit\" class=\"btn btn-primary full-width\" href=\"tel:010-60238889\">预约办理装修许可: 010-60238889</a>\n" +
+    "  </div>\n" +
+    "</div>");
+}]);
 
 angular.module("modules/decorate/templates/decorate-progress.partial.html", []).run(["$templateCache", function($templateCache) {
   $templateCache.put("modules/decorate/templates/decorate-progress.partial.html",
@@ -129,7 +168,7 @@ angular.module("modules/decorate/templates/invitation.html", []).run(["$template
     "      <a ui-sref=\"decorate.reference\">您想委托的装修公司不在列表？</a>\n" +
     "    </div>\n" +
     "\n" +
-    "    <div class=\"container-fluid full-width\" style=\"position:absolute;bottom:10px;padding:0 15px;\">\n" +
+    "    <div class=\"full-width\" style=\"position:absolute;bottom:10px;padding: 0 15px;\">\n" +
     "      <button type=\"submit\" class=\"btn btn-primary full-width\" ng-disabled=\"delegateForm.$invalid\">提交</button>\n" +
     "    </div>\n" +
     "  </form>\n" +
@@ -145,7 +184,7 @@ angular.module("modules/decorate/templates/notice-drawing.html", []).run(["$temp
     "  <dd class=\"simulate-control\"><span class=\"text-muted\">申请人：</span>张先生 186****5297 @{{ decorate.house.apartment }}</dd>\n" +
     "  <dd class=\"simulate-control\"><span class=\"text-muted\">装修公司：</span>{{ decorate.provider.name }}</dd>\n" +
     "</dl>\n" +
-    "<div style=\"position:absolute;bottom:10px;padding: 0 15px;\">\n" +
+    "<div class=\"full-width\" style=\"position:absolute;bottom:10px;padding: 0 15px;\">\n" +
     "  <p class=\"text-muted tiny\">您也可以随时关注我的装修手续，了解办理进展。</p>\n" +
     "  <a ui-sref=\"decorate.progress({decorateId: decorate.id})\" class=\"btn btn-default full-width\">查看我的装修手续</a>\n" +
     "</div>\n" +
@@ -161,7 +200,7 @@ angular.module("modules/decorate/templates/notice-initiate.html", []).run(["$tem
     "  <dd class=\"simulate-control\"><span class=\"text-muted\">申请人：</span>张先生 186****5297 @{{ decorate.house.apartment }}</dd>\n" +
     "  <dd class=\"simulate-control\"><span class=\"text-muted\">装修公司：</span>{{ decorate.provider.name }}</dd>\n" +
     "</dl>\n" +
-    "<div style=\"position:absolute;bottom:10px;padding: 0 15px;\">\n" +
+    "<div class=\"full-width\" style=\"position:absolute;bottom:10px;padding: 0 15px;\">\n" +
     "  <p class=\"text-muted tiny\">您也可以随时关注我的装修手续，了解办理进展。</p>\n" +
     "  <a ui-sref=\"decorate.progress({decorateId: decorate.id})\" class=\"btn btn-default full-width\">查看我的装修手续</a>\n" +
     "</div>\n" +
@@ -204,7 +243,7 @@ angular.module("modules/decorate/templates/reference.html", []).run(["$templateC
     "      <dd>电话：<a href=\"tel:010-60238899\">010-60238899</a></dd>\n" +
     "    </dl>\n" +
     "  </div>\n" +
-    "  <div class=\"container-fluid\" style=\"position:absolute;bottom:10px;padding:0 15px;\">\n" +
+    "  <div class=\"full-width\" style=\"position:absolute;bottom:10px;padding: 0 15px;\">\n" +
     "    <a type=\"submit\" class=\"btn btn-primary full-width\">将《备案须知》分享给装修公司</a>\n" +
     "  </div>\n" +
     "</div>");

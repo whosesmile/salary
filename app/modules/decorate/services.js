@@ -5,6 +5,7 @@ decorateModule.factory('decorateService', ['$http',
 
     return {
 
+      // 获取业主房产明细
       getHouses: function () {
         return $http({
           url: 'mock/decorate/houses.json',
@@ -12,6 +13,7 @@ decorateModule.factory('decorateService', ['$http',
         });
       },
 
+      // 获取装修进度信息
       getProgress: function (decorateId) {
         return $http({
           url: 'mock/decorate/progress.json',
@@ -22,6 +24,7 @@ decorateModule.factory('decorateService', ['$http',
         });
       },
 
+      // 获取供应商列表
       getProviders: function () {
         return $http({
           url: 'mock/decorate/providers.json',
@@ -29,6 +32,7 @@ decorateModule.factory('decorateService', ['$http',
         });
       },
 
+      // 获取房屋信息
       getHouse: function (id) {
         return $http({
           url: 'mock/decorate/house.json',
@@ -39,6 +43,7 @@ decorateModule.factory('decorateService', ['$http',
         });
       },
 
+      // 获得装修详情
       getDecorate: function (id) {
         return $http({
           url: 'mock/decorate/decorate.json',
@@ -49,6 +54,7 @@ decorateModule.factory('decorateService', ['$http',
         });
       },
 
+      // 获得业主装修历史
       getHistory: function () {
         return $http({
           url: 'mock/decorate/history.json',
@@ -78,8 +84,18 @@ decorateModule.factory('decorateService', ['$http',
             decorateId: decorateId
           }
         });
-      }
+      },
 
+      // 获取装修账单
+      getCharge: function (decorateId) {
+        return $http({
+          url: 'mock/decorate/charge.json',
+          method: 'get',
+          params: {
+            decorateId: decorateId
+          }
+        });
+      }
     };
   }
 ]);

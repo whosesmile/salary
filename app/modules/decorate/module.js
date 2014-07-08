@@ -28,12 +28,12 @@ decorateModule.config(['$stateProvider', '$urlRouterProvider',
         controller: 'referenceController',
         templateUrl: "modules/decorate/templates/reference.html"
       })
-      .state('decorate.history', { // 装修公司备案
+      .state('decorate.history', { // 查看装修历史
         url: "/history",
         controller: 'historyController',
         templateUrl: "modules/decorate/templates/history.html"
       })
-      .state('decorate.progress', { // 装修进度
+      .state('decorate.progress', { // 查看装修进度
         url: "/progress/{decorateId:[0-9]+}",
         controller: 'progressController',
         templateUrl: "modules/decorate/templates/progress.html"
@@ -42,6 +42,11 @@ decorateModule.config(['$stateProvider', '$urlRouterProvider',
         url: "/drawing/{decorateId:[0-9]+}",
         controller: 'drawingController',
         templateUrl: "modules/decorate/templates/drawing.html"
+      })
+      .state('decorate.confirm', { // 现场三方确认
+        url: "/confirm/{decorateId:[0-9]+}",
+        controller: 'confirmController',
+        templateUrl: "modules/decorate/templates/confirm.html"
       })
       .state('decorate.notice', { // 通知抽象路由
         abstract: true,

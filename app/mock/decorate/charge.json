@@ -1,17 +1,15 @@
 {
   "code": 200,
   "data": {
-    "bill": {
-    // 这部分是可以退换的
+    "charge": {
       "deposit": [{
         "name": "押金",
-        "money": 3000.10
+        "money": 3000.00
       }, {
         "name": "其他",
-        "amount": 200
+        "money": 200
       }],
-    // 这部分是作为费用扣除
-      "charge": [{
+      "expense": [{
         "name": "卫生费",
         "money": 200
       }]

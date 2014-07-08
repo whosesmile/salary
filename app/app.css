@@ -32,6 +32,8 @@ input.ng-invalid.ng-dirty:focus, textarea.ng-invalid.ng-dirty:focus { border-col
 #reference .main { padding: 20px 15px; }
 #reference .main p { margin-bottom: 24px; }
 #reference .main .indent dd { padding-left: 15px }
+#reference .main .indent dd .details { display: block; padding-left: 0.8rem; }
+#reference .main .indent dd .details .item {margin-right: 5px;}
 /* welcome */
 #welcome { min-height: 100%; background-color: #FFF; }
 #welcome #header { border-bottom: 1px solid #C8C8C8; padding: 15px 10px; }
@@ -56,6 +58,6 @@ input.ng-invalid.ng-dirty:focus, textarea.ng-invalid.ng-dirty:focus { border-col
 #decorate .request dd.select { padding-left: 7px; padding-right: 7px; }
 #decorate .request .form-control { border: none; border-radius: 0x; -webkit-box-shadow: none; box-shadow: none; }
 #decorate .notice .message { padding: 20px 15px 0; }
-#decorate .drawing {padding: 0 15px;}
-#decorate .drawing h5 {margin-top: 20px;}
-#decorate .drawing .btn {margin-bottom: 15px;}
+#decorate .drawing { padding: 0 15px; }
+#decorate .drawing h5 { margin-top: 20px; }
+#decorate .drawing .btn { margin-bottom: 15px; }

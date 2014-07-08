@@ -88,3 +88,12 @@ decorateModule.controller('noticeController', ['$scope', '$state', '$stateParams
     }, function () {});
   }
 ]);
+
+// 三方现场进行装修确认
+decorateModule.controller('confirmController', ['$scope', '$state', '$stateParams', 'decorateService',
+  function ($scope, $state, $params, service) {
+    service.getCharge($params.decorateId).then(function (res) {
+      $scope.charge = res.charge;
+    }, function () {});
+  }
+]);
