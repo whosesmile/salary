@@ -8,8 +8,8 @@
       "name": "装修手续",
       "href": "decorate"
     }, {
-      "name": "社区小喇叭",
-      "href": ""
+      "name": "装修履历",
+      "href": "decorate/history"
     }]
   }
 }

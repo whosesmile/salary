@@ -1,9 +1,9 @@
-angular.module('templates', ['modules/decorate/templates/decorate-progress.partial.html', 'modules/decorate/templates/decorate.html', 'modules/decorate/templates/houses.html', 'modules/decorate/templates/invitation.html', 'modules/decorate/templates/progress.html', 'modules/decorate/templates/prompt.html', 'modules/decorate/templates/reference.html', 'modules/register/templates/captcha.html', 'modules/register/templates/failure.html', 'modules/register/templates/mobile.html', 'modules/register/templates/register.html', 'modules/register/templates/success.html', 'modules/welcome/templates/home.html']);
+angular.module('templates', ['modules/decorate/templates/decorate-progress.partial.html', 'modules/decorate/templates/decorate.html', 'modules/decorate/templates/drawing.html', 'modules/decorate/templates/history.html', 'modules/decorate/templates/houses.html', 'modules/decorate/templates/invitation.html', 'modules/decorate/templates/notice-drawing.html', 'modules/decorate/templates/notice-initiate.html', 'modules/decorate/templates/progress.html', 'modules/decorate/templates/reference.html', 'modules/register/templates/captcha.html', 'modules/register/templates/failure.html', 'modules/register/templates/mobile.html', 'modules/register/templates/register.html', 'modules/register/templates/success.html', 'modules/welcome/templates/home.html']);
 
 angular.module("modules/decorate/templates/decorate-progress.partial.html", []).run(["$templateCache", function($templateCache) {
   $templateCache.put("modules/decorate/templates/decorate-progress.partial.html",
     "<dd>\n" +
-    "  <a ui-sref=\"decorate.houses\" class=\"desc\">\n" +
+    "  <a class=\"desc\" ng-click=\"nextStep(item)\">\n" +
     "    <span class=\"status pull-right\" ng-hide=\"!action\" ng-class=\"{'text-light': muted}\">{{ action }}</span>\n" +
     "    <span class=\"apartment text-default\" ng-transclude></span>\n" +
     "  </a>\n" +
@@ -20,8 +20,43 @@ angular.module("modules/decorate/templates/decorate-progress.partial.html", []).
 
 angular.module("modules/decorate/templates/decorate.html", []).run(["$templateCache", function($templateCache) {
   $templateCache.put("modules/decorate/templates/decorate.html",
-    "<div id=\"decorate\" class=\"wrapper\">\n" +
-    "  <div ui-view></div>\n" +
+    "<div id=\"decorate\" ui-view></div>");
+}]);
+
+angular.module("modules/decorate/templates/drawing.html", []).run(["$templateCache", function($templateCache) {
+  $templateCache.put("modules/decorate/templates/drawing.html",
+    "<div class=\"drawing\">\n" +
+    "  <h5 class=\"small text-light\">提交装修图纸方式：</h5>\n" +
+    "  <a class=\"btn btn-success full-width\">1）在线提交装修图纸</a>\n" +
+    "  <a class=\"btn btn-primary full-width\" ng-click=\"manualSubmit()\">2）装修公司现场提交</a>\n" +
+    "</div>");
+}]);
+
+angular.module("modules/decorate/templates/history.html", []).run(["$templateCache", function($templateCache) {
+  $templateCache.put("modules/decorate/templates/history.html",
+    "<div class=\"history\">\n" +
+    "  <a class=\"text-default\" ui-sref=\"decorate.progress({decorateId: decorate.id})\" ng-repeat=\"decorate in decorates\">\n" +
+    "    <dl class=\"terms tiny\">\n" +
+    "      <dt class=\"clearfix\">\n" +
+    "        <span class=\"pull-left text-light\">序列号：{{ decorate.id }}</span>\n" +
+    "        <span class=\"pull-right text-warning\">{{ decorate.status|decorateStatus }}</span>\n" +
+    "      </dt>\n" +
+    "      <dd class=\"simulate-control\">\n" +
+    "        <div class=\"container-fluid\">\n" +
+    "          <div class=\"row\">\n" +
+    "            <div class=\"col-xs-6 col-sm-6 text-overflow\">\n" +
+    "              <span class=\"text-muted\">社区：</span>{{ decorate.buildingName }}\n" +
+    "            </div>\n" +
+    "            <div class=\"col-xs-6 col-sm-6\">\n" +
+    "              <span class=\"text-muted\">申请日期：</span>{{ decorate.time|date:'yyyy-MM-dd' }}\n" +
+    "            </div>\n" +
+    "          </div>\n" +
+    "        </div>\n" +
+    "      </dd>\n" +
+    "      <dd class=\"simulate-control text-overflow\"><span class=\"text-muted\">申请人：</span>{{ decorate.userName }} {{ decorate.userMobile }} @{{ decorate.roomName }}</dd>\n" +
+    "      <dd class=\"simulate-control text-overflow\"><span class=\"text-muted\">装修公司：</span>{{ decorate.provider }}</dd>\n" +
+    "    </dl>\n" +
+    "  </a>\n" +
     "</div>");
 }]);
 
@@ -94,15 +129,43 @@ angular.module("modules/decorate/templates/invitation.html", []).run(["$template
     "      <a ui-sref=\"decorate.reference\">您想委托的装修公司不在列表？</a>\n" +
     "    </div>\n" +
     "\n" +
-    "    <div class=\"container-fluid full-width\" style=\"position:absolute;bottom:10px;\">\n" +
-    "      <div class=\"row\">\n" +
-    "        <div class=\"col-xs-12 col-sm-12\">\n" +
-    "          <button type=\"submit\" class=\"btn btn-primary full-width\" ng-disabled=\"delegateForm.$invalid\">提交</button>\n" +
-    "        </div>\n" +
-    "      </div>\n" +
+    "    <div class=\"container-fluid full-width\" style=\"position:absolute;bottom:10px;padding:0 15px;\">\n" +
+    "      <button type=\"submit\" class=\"btn btn-primary full-width\" ng-disabled=\"delegateForm.$invalid\">提交</button>\n" +
     "    </div>\n" +
     "  </form>\n" +
     "</div>");
+}]);
+
+angular.module("modules/decorate/templates/notice-drawing.html", []).run(["$templateCache", function($templateCache) {
+  $templateCache.put("modules/decorate/templates/notice-drawing.html",
+    "<p class=\"message\">已通知您委托的装修公司提交装修平面设计图。也请督促他们尽快提交。</p>\n" +
+    "<dl class=\"terms small\">\n" +
+    "  <dt class=\"text-warning text-right\">待装修公司提交图纸</dt>\n" +
+    "  <dd class=\"simulate-control\"><span class=\"text-muted\">社区：</span>{{ decorate.house.community }}</dd>\n" +
+    "  <dd class=\"simulate-control\"><span class=\"text-muted\">申请人：</span>张先生 186****5297 @{{ decorate.house.apartment }}</dd>\n" +
+    "  <dd class=\"simulate-control\"><span class=\"text-muted\">装修公司：</span>{{ decorate.provider.name }}</dd>\n" +
+    "</dl>\n" +
+    "<div style=\"position:absolute;bottom:10px;padding: 0 15px;\">\n" +
+    "  <p class=\"text-muted tiny\">您也可以随时关注我的装修手续，了解办理进展。</p>\n" +
+    "  <a ui-sref=\"decorate.progress({decorateId: decorate.id})\" class=\"btn btn-default full-width\">查看我的装修手续</a>\n" +
+    "</div>\n" +
+    "");
+}]);
+
+angular.module("modules/decorate/templates/notice-initiate.html", []).run(["$templateCache", function($templateCache) {
+  $templateCache.put("modules/decorate/templates/notice-initiate.html",
+    "<p class=\"message\">已向您委托的装修公司发出握手请求，请提醒对方在24小时内相应。</p>\n" +
+    "<dl class=\"terms small\">\n" +
+    "  <dt class=\"text-warning text-right\">待装修公司握手</dt>\n" +
+    "  <dd class=\"simulate-control\"><span class=\"text-muted\">社区：</span>{{ decorate.house.community }}</dd>\n" +
+    "  <dd class=\"simulate-control\"><span class=\"text-muted\">申请人：</span>张先生 186****5297 @{{ decorate.house.apartment }}</dd>\n" +
+    "  <dd class=\"simulate-control\"><span class=\"text-muted\">装修公司：</span>{{ decorate.provider.name }}</dd>\n" +
+    "</dl>\n" +
+    "<div style=\"position:absolute;bottom:10px;padding: 0 15px;\">\n" +
+    "  <p class=\"text-muted tiny\">您也可以随时关注我的装修手续，了解办理进展。</p>\n" +
+    "  <a ui-sref=\"decorate.progress({decorateId: decorate.id})\" class=\"btn btn-default full-width\">查看我的装修手续</a>\n" +
+    "</div>\n" +
+    "");
 }]);
 
 angular.module("modules/decorate/templates/progress.html", []).run(["$templateCache", function($templateCache) {
@@ -110,36 +173,14 @@ angular.module("modules/decorate/templates/progress.html", []).run(["$templateCa
     "<div class=\"decorate-progress\">\n" +
     "  <div class=\"title small text-light\">北京时代天街10栋1单元1601室 装修单</div>\n" +
     "  <dl class=\"terms\">\n" +
-    "    <decorate-progress stage=\"before\" items=\"progress\">在线提交装修许可申请</decorate-progress>\n" +
+    "    <decorate-progress stage=\"before\" decorate-id=\"decorateId\" items=\"progress\">在线提交装修许可申请</decorate-progress>\n" +
     "  </dl>\n" +
     "  <dl class=\"terms\">\n" +
-    "    <decorate-progress stage=\"process\" items=\"progress\">现场办理装修许可</decorate-progress>\n" +
+    "    <decorate-progress stage=\"process\" decorate-id=\"decorateId\" items=\"progress\">现场办理装修许可</decorate-progress>\n" +
     "  </dl>\n" +
     "  <dl class=\"terms\">\n" +
-    "    <decorate-progress stage=\"after\" items=\"progress\">在线申请验收&amp;押金退款</decorate-progress>\n" +
+    "    <decorate-progress stage=\"after\" decorate-id=\"decorateId\" items=\"progress\">在线申请验收&amp;押金退款</decorate-progress>\n" +
     "  </dl>\n" +
-    "</div>");
-}]);
-
-angular.module("modules/decorate/templates/prompt.html", []).run(["$templateCache", function($templateCache) {
-  $templateCache.put("modules/decorate/templates/prompt.html",
-    "<div class=\"prompt\">\n" +
-    "  <p class=\"message\">已向您委托的装修公司发出握手请求，请提醒对方在24小时内相应。</p>\n" +
-    "\n" +
-    "  <dl class=\"terms small\">\n" +
-    "    <dt class=\"text-warning text-right\">待装修公司握手</dt>\n" +
-    "    <dd class=\"simulate-control\"><span class=\"text-muted\">社区：</span>{{ decorate.house.community }}</dd>\n" +
-    "    <dd class=\"simulate-control\"><span class=\"text-muted\">申请人：</span>张先生 186****5297 @{{ decorate.house.apartment }}</dd>\n" +
-    "    <dd class=\"simulate-control\"><span class=\"text-muted\">装修公司：</span>{{ decorate.provider.name }}</dd>\n" +
-    "  </dl>\n" +
-    "  <div class=\"container-fluid full-width\" style=\"position:absolute;bottom:10px;\">\n" +
-    "    <div class=\"row\">\n" +
-    "      <div class=\"col-xs-12 col-sm-12\">\n" +
-    "        <p class=\"text-muted tiny\">您也可以随时关注我的装修手续，了解办理进展。</p>\n" +
-    "        <a ui-sref=\"decorate.progress({decorateId:decorate.id})\" class=\"btn btn-default full-width\">查看我的装修手续</a>\n" +
-    "      </div>\n" +
-    "    </div>\n" +
-    "  </div>\n" +
     "</div>");
 }]);
 
@@ -160,15 +201,11 @@ angular.module("modules/decorate/templates/reference.html", []).run(["$templateC
     "      <dt class=\"text-default\">请到这里来备案：</dt>\n" +
     "      <dd>北京时代天街 客服中心</dd>\n" +
     "      <dd>地址：北京市大兴区广平路3号B102</dd>\n" +
-    "      <dd>电话：<a href=\"tel:01060238899\">010-60238899</a></dd>\n" +
+    "      <dd>电话：<a href=\"tel:010-60238899\">010-60238899</a></dd>\n" +
     "    </dl>\n" +
     "  </div>\n" +
-    "  <div class=\"container-fluid full-width\" style=\"position:absolute;bottom:10px;\">\n" +
-    "    <div class=\"row\">\n" +
-    "      <div class=\"col-xs-12 col-sm-12\">\n" +
-    "        <a type=\"submit\" class=\"btn btn-primary full-width\">将《备案须知》分享给装修公司</a>\n" +
-    "      </div>\n" +
-    "    </div>\n" +
+    "  <div class=\"container-fluid\" style=\"position:absolute;bottom:10px;padding:0 15px;\">\n" +
+    "    <a type=\"submit\" class=\"btn btn-primary full-width\">将《备案须知》分享给装修公司</a>\n" +
     "  </div>\n" +
     "</div>");
 }]);

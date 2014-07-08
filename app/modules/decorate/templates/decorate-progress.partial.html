@@ -1,5 +1,5 @@
 <dd>
-  <a ui-sref="decorate.houses" class="desc">
+  <a class="desc" ng-click="nextStep(item)">
     <span class="status pull-right" ng-hide="!action" ng-class="{'text-light': muted}">{{ action }}</span>
     <span class="apartment text-default" ng-transclude></span>
   </a>

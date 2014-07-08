@@ -8,7 +8,8 @@ welcomeModule.factory('welcomeService', ['$http',
       getCatagory: function () {
         return $http({
           url: 'mock/welcome/catagory.json',
-          method: 'get'
+          method: 'get',
+          cache: true
         });
       }
 

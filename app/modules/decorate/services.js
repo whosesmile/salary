@@ -49,6 +49,13 @@ decorateModule.factory('decorateService', ['$http',
         });
       },
 
+      getHistory: function () {
+        return $http({
+          url: 'mock/decorate/history.json',
+          method: 'get'
+        });
+      },
+
       // 发送装修申请
       sendInvitation: function (houseId, decorateId, date) {
         return $http({
@@ -58,6 +65,17 @@ decorateModule.factory('decorateService', ['$http',
             houseId: houseId,
             decorateId: decorateId,
             date: date
+          }
+        });
+      },
+
+      // 发送提交图纸通知
+      sendManualSubmit: function (decorateId) {
+        return $http({
+          url: 'mock/decorate/success.json',
+          method: 'post',
+          data: {
+            decorateId: decorateId
           }
         });
       }

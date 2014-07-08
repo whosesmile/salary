@@ -2,6 +2,8 @@
 
 body { background-color: #F0F0F0; }
 body.home { background-color: #FFFFFF; }
+a { color: #0080f8; }
+a:hover, a:focus { text-decoration: none; }
 .tiny { font-size: 75%; }
 .text-thick { color: #000; }
 .text-default { color: #333; }
@@ -45,6 +47,7 @@ input.ng-invalid.ng-dirty:focus, textarea.ng-invalid.ng-dirty:focus { border-col
 #decorate .terms dd { border-top: 1px solid #C8C8C8; background-color: #FFF; }
 #decorate .terms dd:last-child { border-bottom: 1px solid #C8C8C8; }
 #decorate .terms dd.simulate-control { padding: 6px 16px; line-height: 24px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+#decorate .terms dd.simulate-control .container-fluid { padding-left: 0; padding-right: 0; }
 #decorate .terms dd .desc { display: block; padding: 10px 15px; }
 #decorate .terms .apartment { display: block; margin-right: 70px; }
 #decorate .terms ul li { padding: 5px 15px; }
@@ -52,4 +55,7 @@ input.ng-invalid.ng-dirty:focus, textarea.ng-invalid.ng-dirty:focus { border-col
 #decorate .request dd { padding-left: 4px; padding-right: 4px; }
 #decorate .request dd.select { padding-left: 7px; padding-right: 7px; }
 #decorate .request .form-control { border: none; border-radius: 0x; -webkit-box-shadow: none; box-shadow: none; }
-#decorate .prompt .message { padding: 20px 15px 0; }
+#decorate .notice .message { padding: 20px 15px 0; }
+#decorate .drawing {padding: 0 15px;}
+#decorate .drawing h5 {margin-top: 20px;}
+#decorate .drawing .btn {margin-bottom: 15px;}

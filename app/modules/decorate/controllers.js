@@ -32,20 +32,11 @@ decorateModule.controller('invitationController', ['$scope', '$state', '$statePa
       // 提交表单处理
       $scope.submitRequest = function () {
         service.sendInvitation($scope.house.id, $scope.provider.id, $scope.date).then(function (res) {
-          $state.go('decorate.prompt', {
+          $state.go('decorate.notice.initiate', {
             decorateId: res.decorateId
           });
         }, function () {});
       };
-    }, function () {});
-  }
-]);
-
-// 装修申请成功提示
-decorateModule.controller('promptController', ['$scope', '$state', '$stateParams', 'decorateService',
-  function ($scope, $state, $params, service) {
-    service.getDecorate($params.decorateId).then(function (res) {
-      $scope.decorate = res.decorate;
     }, function () {});
   }
 ]);
@@ -55,13 +46,45 @@ decorateModule.controller('progressController', ['$scope', '$state', '$statePara
   function ($scope, $state, $params, service) {
     service.getProgress($params.decorateId).then(function (res) {
       $scope.progress = res.progress;
+      $scope.decorateId = $params.decorateId;
     }, function () {});
   }
 ]);
 
 // 查看备案说明
-decorateModule.controller('referenceController', ['$scope', '$state', '$stateParams', 'decorateService',
-  function ($scope, $state, $params, service) {
+decorateModule.controller('referenceController', ['$scope', '$state', 'decorateService',
+  function ($scope, $state, service) {
     // TODO
+  }
+]);
+
+// 查看装修历史
+decorateModule.controller('historyController', ['$scope', '$state', 'decorateService',
+  function ($scope, $state, service) {
+    service.getHistory().then(function (res) {
+      $scope.decorates = res.decorates;
+    }, function () {});
+  }
+]);
+
+// 上传图纸界面
+decorateModule.controller('drawingController', ['$scope', '$state', '$stateParams', 'decorateService',
+  function ($scope, $state, $params, service) {
+    $scope.manualSubmit = function () {
+      service.sendManualSubmit().then(function () {
+        $state.go('decorate.notice.drawing', {
+          decorateId: $params.decorateId
+        });
+      }, function () {});
+    };
+  }
+]);
+
+// 通用通知
+decorateModule.controller('noticeController', ['$scope', '$state', '$stateParams', 'decorateService',
+  function ($scope, $state, $params, service) {
+    service.getDecorate($params.decorateId).then(function (res) {
+      $scope.decorate = res.decorate;
+    }, function () {});
   }
 ]);
