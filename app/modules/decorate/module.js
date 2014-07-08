@@ -48,6 +48,11 @@ decorateModule.config(['$stateProvider', '$urlRouterProvider',
         controller: 'confirmController',
         templateUrl: "modules/decorate/templates/confirm.html"
       })
+      .state('decorate.acceptance', { // 验收装修工程
+        url: "/acceptance/{decorateId:[0-9]+}",
+        controller: 'acceptanceController',
+        templateUrl: "modules/decorate/templates/acceptance.html"
+      })
       .state('decorate.notice', { // 通知抽象路由
         abstract: true,
         url: "/notice",
@@ -62,6 +67,11 @@ decorateModule.config(['$stateProvider', '$urlRouterProvider',
         url: "/drawing/{decorateId:[0-9]+}",
         controller: 'noticeController',
         templateUrl: "modules/decorate/templates/notice-drawing.html"
+      })
+      .state('decorate.notice.acceptance', { // 通知：已经发送验收申请
+        url: "/acceptance/{decorateId:[0-9]+}",
+        controller: 'noticeController',
+        templateUrl: "modules/decorate/templates/notice-acceptance.html"
       });
   }
 ]);

@@ -71,9 +71,9 @@ decorateModule.directive('decorateProgress', ['$filter', '$state',
         scope.nextStep = function () {
           var myrange = section[scope.stage][1];
           var current = scope.items[scope.items.length - 1].status;
-          if (myrange > current) {
-            console.log(scope)
-            $state.go(routers[scope.stage][current], {
+          var sref = routers[scope.stage][current];
+          if (myrange > current && sref) {
+            $state.go(sref, {
               decorateId: scope.decorateId
             });
           }

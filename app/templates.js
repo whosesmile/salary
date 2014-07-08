@@ -1,4 +1,38 @@
-angular.module('templates', ['modules/decorate/templates/confirm.html', 'modules/decorate/templates/decorate-progress.partial.html', 'modules/decorate/templates/decorate.html', 'modules/decorate/templates/drawing.html', 'modules/decorate/templates/history.html', 'modules/decorate/templates/houses.html', 'modules/decorate/templates/invitation.html', 'modules/decorate/templates/notice-drawing.html', 'modules/decorate/templates/notice-initiate.html', 'modules/decorate/templates/progress.html', 'modules/decorate/templates/reference.html', 'modules/register/templates/captcha.html', 'modules/register/templates/failure.html', 'modules/register/templates/mobile.html', 'modules/register/templates/register.html', 'modules/register/templates/success.html', 'modules/welcome/templates/home.html']);
+angular.module('templates', ['modules/decorate/templates/acceptance.html', 'modules/decorate/templates/confirm.html', 'modules/decorate/templates/decorate-progress.partial.html', 'modules/decorate/templates/decorate.html', 'modules/decorate/templates/drawing.html', 'modules/decorate/templates/history.html', 'modules/decorate/templates/houses.html', 'modules/decorate/templates/invitation.html', 'modules/decorate/templates/notice-acceptance.html', 'modules/decorate/templates/notice-drawing.html', 'modules/decorate/templates/notice-initiate.html', 'modules/decorate/templates/progress.html', 'modules/decorate/templates/reference.html', 'modules/register/templates/captcha.html', 'modules/register/templates/failure.html', 'modules/register/templates/mobile.html', 'modules/register/templates/register.html', 'modules/register/templates/success.html', 'modules/welcome/templates/home.html']);
+
+angular.module("modules/decorate/templates/acceptance.html", []).run(["$templateCache", function($templateCache) {
+  $templateCache.put("modules/decorate/templates/acceptance.html",
+    "<div class=\"request\">\n" +
+    "  <form name=\"acceptanceForm\" ng-submit=\"submitVerify()\">\n" +
+    "    <dl class=\"terms\">\n" +
+    "      <dt class=\"small text-light\">您的装修公司</dt>\n" +
+    "      <dd class=\"simulate-control\">某某某装修公司</dd>\n" +
+    "    </dl>\n" +
+    "    <dl class=\"terms\">\n" +
+    "      <dt class=\"small text-light\">您的个人信息</dt>\n" +
+    "      <dd class=\"simulate-control clearfix\">\n" +
+    "        <span class=\"pull-left\">张三先生</span>\n" +
+    "        <span class=\"pull-right text-holder\">186****5297</span>\n" +
+    "      </dd>\n" +
+    "    </dl>\n" +
+    "    <dl class=\"terms\">\n" +
+    "      <dt class=\"small text-light\">您的装修房间</dt>\n" +
+    "      <dd class=\"simulate-control\">\n" +
+    "        炫特嘉园3C1905\n" +
+    "      </dd>\n" +
+    "    </dl>\n" +
+    "    <dl class=\"terms\">\n" +
+    "      <dt class=\"small text-light\">您希望的验收日期</dt>\n" +
+    "      <dd>\n" +
+    "        <input class=\"form-control\" type=\"date\" ng-model=\"date\"  placeholder=\"选择验收日期\" required />\n" +
+    "      </dd>\n" +
+    "    </dl>\n" +
+    "    <div class=\"full-width\" style=\"position:absolute;bottom:10px;padding: 0 15px;\">\n" +
+    "      <button type=\"submit\" class=\"btn btn-primary full-width\" ng-disabled=\"acceptanceForm.$invalid\">申请验收</button>\n" +
+    "    </div>\n" +
+    "  </form>\n" +
+    "</div>");
+}]);
 
 angular.module("modules/decorate/templates/confirm.html", []).run(["$templateCache", function($templateCache) {
   $templateCache.put("modules/decorate/templates/confirm.html",
@@ -173,6 +207,22 @@ angular.module("modules/decorate/templates/invitation.html", []).run(["$template
     "    </div>\n" +
     "  </form>\n" +
     "</div>");
+}]);
+
+angular.module("modules/decorate/templates/notice-acceptance.html", []).run(["$templateCache", function($templateCache) {
+  $templateCache.put("modules/decorate/templates/notice-acceptance.html",
+    "<p class=\"message\">您已申请装修验收，我们会尽快与您和您的装修公司联络，实施验收。</p>\n" +
+    "<dl class=\"terms small\">\n" +
+    "  <dt class=\"text-warning text-right\">待物业反馈</dt>\n" +
+    "  <dd class=\"simulate-control\"><span class=\"text-muted\">社区：</span>{{ decorate.house.community }}</dd>\n" +
+    "  <dd class=\"simulate-control\"><span class=\"text-muted\">申请人：</span>张先生 186****5297 @{{ decorate.house.apartment }}</dd>\n" +
+    "  <dd class=\"simulate-control\"><span class=\"text-muted\">装修公司：</span>{{ decorate.provider.name }}</dd>\n" +
+    "</dl>\n" +
+    "<div class=\"full-width\" style=\"position:absolute;bottom:10px;padding: 0 15px;\">\n" +
+    "  <p class=\"text-muted tiny\">您也可以随时关注我的装修手续，了解办理进展。</p>\n" +
+    "  <a ui-sref=\"decorate.progress({decorateId: decorate.id})\" class=\"btn btn-default full-width\">查看我的装修手续</a>\n" +
+    "</div>\n" +
+    "");
 }]);
 
 angular.module("modules/decorate/templates/notice-drawing.html", []).run(["$templateCache", function($templateCache) {

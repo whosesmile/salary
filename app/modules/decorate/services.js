@@ -95,6 +95,17 @@ decorateModule.factory('decorateService', ['$http',
             decorateId: decorateId
           }
         });
+      },
+
+      // 验收装修工程
+      sendVerify: function (decorateId) {
+        return $http({
+          url: 'mock/decorate/verify.json',
+          method: 'post',
+          data: {
+            decorateId: decorateId
+          }
+        });
       }
     };
   }

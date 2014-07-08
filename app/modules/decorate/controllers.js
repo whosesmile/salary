@@ -97,3 +97,16 @@ decorateModule.controller('confirmController', ['$scope', '$state', '$stateParam
     }, function () {});
   }
 ]);
+
+// 验收房产
+decorateModule.controller('acceptanceController', ['$scope', '$state', '$stateParams', 'decorateService',
+  function ($scope, $state, $params, service) {
+    $scope.submitVerify = function () {
+      service.sendVerify($params.decorateId).then(function (res) {
+        $state.go('decorate.notice.acceptance', {
+          decorateId: $params.decorateId
+        });
+      }, function () {});
+    };
+  }
+]);
