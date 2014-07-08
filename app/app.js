@@ -22,6 +22,21 @@ app.config(['$httpProvider',
       function ($q) {
         return {
           request: function (config) {
+            // REST 风格路由重写
+            var rules = config.url.match(/:(\w+)/g);
+            if (rules !== null) {
+              angular.forEach(rules, function (rule) {
+                var name = rule.substring(1);
+                if (config.params && config.params.hasOwnProperty(name)) {
+                  config.url = config.url.replace(rule, config.params[name]);
+                  delete config.params[name];
+                }
+                else if (config.data && config.data.hasOwnProperty(name)) {
+                  config.url = config.url.replace(rule, config.data[name]);
+                  delete config.data[name];
+                }
+              });
+            }
             return $q.when(config);
           },
           response: function (response) {
