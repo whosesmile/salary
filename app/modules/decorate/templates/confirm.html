@@ -13,12 +13,12 @@
     </dl>
     <dl class="indent">
       <dt class="text-default">手续费用：</dt>
-      <dd>- 您需缴纳的费用合计为：￥6800.00</dd>
+      <dd>- 您需缴纳的费用合计为：￥{{ total|number:2 }}</dd>
       <dd>
         <span class="tiny text-muted details">
-          包括：
+          ( 包括：
           <span class="item" ng-repeat="item in charge.deposit">{{ item.name }} ￥{{ item.money|number:2 }}</span>
-          <span class="item" ng-repeat="item in charge.expense">{{ item.name }} ￥{{ item.money|number:2 }}</span>
+          <span class="item" ng-repeat="item in charge.expense">{{ item.name }} ￥{{ item.money|number:2 }}</span>)
         </span>
       </dd>
     </dl>

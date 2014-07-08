@@ -92,8 +92,16 @@ decorateModule.controller('noticeController', ['$scope', '$state', '$stateParams
 // 三方现场进行装修确认
 decorateModule.controller('confirmController', ['$scope', '$state', '$stateParams', 'decorateService',
   function ($scope, $state, $params, service) {
+    $scope.total = 0;
+
     service.getCharge($params.decorateId).then(function (res) {
       $scope.charge = res.charge;
+      angular.forEach($scope.charge.deposit, function (item) {
+        $scope.total += item.money;
+      });
+      angular.forEach($scope.charge.expense, function (item) {
+        $scope.total += item.money;
+      });
     }, function () {});
   }
 ]);
@@ -104,6 +112,29 @@ decorateModule.controller('acceptanceController', ['$scope', '$state', '$statePa
     $scope.submitVerify = function () {
       service.sendVerify($params.decorateId).then(function (res) {
         $state.go('decorate.notice.acceptance', {
+          decorateId: $params.decorateId
+        });
+      }, function () {});
+    };
+  }
+]);
+
+// 申请退款
+decorateModule.controller('refundController', ['$scope', '$state', '$stateParams', 'decorateService',
+  function ($scope, $state, $params, service) {
+
+    $scope.repay = 0;
+
+    service.getCharge($params.decorateId).then(function (res) {
+      $scope.charge = res.charge;
+      angular.forEach($scope.charge.deposit, function (item) {
+        $scope.repay += item.money;
+      });
+    }, function () {});
+
+    $scope.submitRefund = function () {
+      service.sendRefund($params.decorateId).then(function (res) {
+        $state.go('decorate.notice.refund', {
           decorateId: $params.decorateId
         });
       }, function () {});

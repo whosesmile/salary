@@ -1,4 +1,4 @@
-angular.module('templates', ['modules/decorate/templates/acceptance.html', 'modules/decorate/templates/confirm.html', 'modules/decorate/templates/decorate-progress.partial.html', 'modules/decorate/templates/decorate.html', 'modules/decorate/templates/drawing.html', 'modules/decorate/templates/history.html', 'modules/decorate/templates/houses.html', 'modules/decorate/templates/invitation.html', 'modules/decorate/templates/notice-acceptance.html', 'modules/decorate/templates/notice-drawing.html', 'modules/decorate/templates/notice-initiate.html', 'modules/decorate/templates/progress.html', 'modules/decorate/templates/reference.html', 'modules/register/templates/captcha.html', 'modules/register/templates/failure.html', 'modules/register/templates/mobile.html', 'modules/register/templates/register.html', 'modules/register/templates/success.html', 'modules/welcome/templates/home.html']);
+angular.module('templates', ['modules/decorate/templates/acceptance.html', 'modules/decorate/templates/confirm.html', 'modules/decorate/templates/decorate-progress.partial.html', 'modules/decorate/templates/decorate.html', 'modules/decorate/templates/drawing.html', 'modules/decorate/templates/history.html', 'modules/decorate/templates/houses.html', 'modules/decorate/templates/invitation.html', 'modules/decorate/templates/notice-acceptance.html', 'modules/decorate/templates/notice-drawing.html', 'modules/decorate/templates/notice-initiate.html', 'modules/decorate/templates/notice-refund.html', 'modules/decorate/templates/progress.html', 'modules/decorate/templates/reference.html', 'modules/decorate/templates/refund.html', 'modules/register/templates/captcha.html', 'modules/register/templates/failure.html', 'modules/register/templates/mobile.html', 'modules/register/templates/register.html', 'modules/register/templates/success.html', 'modules/welcome/templates/home.html']);
 
 angular.module("modules/decorate/templates/acceptance.html", []).run(["$templateCache", function($templateCache) {
   $templateCache.put("modules/decorate/templates/acceptance.html",
@@ -51,12 +51,12 @@ angular.module("modules/decorate/templates/confirm.html", []).run(["$templateCac
     "    </dl>\n" +
     "    <dl class=\"indent\">\n" +
     "      <dt class=\"text-default\">手续费用：</dt>\n" +
-    "      <dd>- 您需缴纳的费用合计为：￥6800.00</dd>\n" +
+    "      <dd>- 您需缴纳的费用合计为：￥{{ total|number:2 }}</dd>\n" +
     "      <dd>\n" +
     "        <span class=\"tiny text-muted details\">\n" +
-    "          包括：\n" +
+    "          ( 包括：\n" +
     "          <span class=\"item\" ng-repeat=\"item in charge.deposit\">{{ item.name }} ￥{{ item.money|number:2 }}</span>\n" +
-    "          <span class=\"item\" ng-repeat=\"item in charge.expense\">{{ item.name }} ￥{{ item.money|number:2 }}</span>\n" +
+    "          <span class=\"item\" ng-repeat=\"item in charge.expense\">{{ item.name }} ￥{{ item.money|number:2 }}</span>)\n" +
     "        </span>\n" +
     "      </dd>\n" +
     "    </dl>\n" +
@@ -257,6 +257,22 @@ angular.module("modules/decorate/templates/notice-initiate.html", []).run(["$tem
     "");
 }]);
 
+angular.module("modules/decorate/templates/notice-refund.html", []).run(["$templateCache", function($templateCache) {
+  $templateCache.put("modules/decorate/templates/notice-refund.html",
+    "<p class=\"message\">您已申请验收退款。我们需要在此后3个月内对您房间的装修质量作进一步观察。</p>\n" +
+    "<dl class=\"terms small\">\n" +
+    "  <dt class=\"text-warning text-right\">待物业退款</dt>\n" +
+    "  <dd class=\"simulate-control\"><span class=\"text-muted\">社区：</span>{{ decorate.house.community }}</dd>\n" +
+    "  <dd class=\"simulate-control\"><span class=\"text-muted\">申请人：</span>张先生 186****5297 @{{ decorate.house.apartment }}</dd>\n" +
+    "  <dd class=\"simulate-control\"><span class=\"text-muted\">装修公司：</span>{{ decorate.provider.name }}</dd>\n" +
+    "</dl>\n" +
+    "<div class=\"full-width\" style=\"position:absolute;bottom:10px;padding: 0 15px;\">\n" +
+    "  <p class=\"text-muted tiny\">您也可以随时关注我的装修手续，了解办理进展。</p>\n" +
+    "  <a ui-sref=\"decorate.progress({decorateId: decorate.id})\" class=\"btn btn-default full-width\">查看我的装修手续</a>\n" +
+    "</div>\n" +
+    "");
+}]);
+
 angular.module("modules/decorate/templates/progress.html", []).run(["$templateCache", function($templateCache) {
   $templateCache.put("modules/decorate/templates/progress.html",
     "<div class=\"decorate-progress\">\n" +
@@ -295,6 +311,32 @@ angular.module("modules/decorate/templates/reference.html", []).run(["$templateC
     "  </div>\n" +
     "  <div class=\"full-width\" style=\"position:absolute;bottom:10px;padding: 0 15px;\">\n" +
     "    <a type=\"submit\" class=\"btn btn-primary full-width\">将《备案须知》分享给装修公司</a>\n" +
+    "  </div>\n" +
+    "</div>");
+}]);
+
+angular.module("modules/decorate/templates/refund.html", []).run(["$templateCache", function($templateCache) {
+  $templateCache.put("modules/decorate/templates/refund.html",
+    "<div id=\"reference\">\n" +
+    "  <div class=\"main text-light\">\n" +
+    "    <p>您的房间装修已验收。</p>\n" +
+    "    <p>我们需要在此后3个月内对您房间的装修质量作进一步观察，确认无外观防漏等问题后，为您办理正式押金退款。</p>\n" +
+    "    <dl class=\"indent\">\n" +
+    "      <dt class=\"text-default\">预计退款金额：</dt>\n" +
+    "      <dd>- 退款金额：￥{{ repay|number:2 }}</dd>\n" +
+    "      <dd>\n" +
+    "        <span class=\"tiny text-muted details\">\n" +
+    "          ( 扣除：<span class=\"item\" ng-repeat=\"item in charge.expense\">{{ item.name }} ￥{{ item.money|number:2 }}</span>)\n" +
+    "        </span>\n" +
+    "      </dd>\n" +
+    "    </dl>\n" +
+    "    <dl class=\"indent\">\n" +
+    "      <dt class=\"text-default\">预计退款时间：</dt>\n" +
+    "      <dd>- 退款时间：2014-08-08</dd>\n" +
+    "    </dl>\n" +
+    "  </div>\n" +
+    "  <div class=\"full-width\" style=\"position:absolute;bottom:10px;padding: 0 15px;\">\n" +
+    "    <a ng-click=\"submitRefund()\" class=\"btn btn-primary full-width\">申请退款</a>\n" +
     "  </div>\n" +
     "</div>");
 }]);

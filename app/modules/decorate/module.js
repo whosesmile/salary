@@ -53,6 +53,11 @@ decorateModule.config(['$stateProvider', '$urlRouterProvider',
         controller: 'acceptanceController',
         templateUrl: "modules/decorate/templates/acceptance.html"
       })
+      .state('decorate.refund', { // 现场三方确认
+        url: "/refund/{decorateId:[0-9]+}",
+        controller: 'refundController',
+        templateUrl: "modules/decorate/templates/refund.html"
+      })
       .state('decorate.notice', { // 通知抽象路由
         abstract: true,
         url: "/notice",
@@ -72,6 +77,11 @@ decorateModule.config(['$stateProvider', '$urlRouterProvider',
         url: "/acceptance/{decorateId:[0-9]+}",
         controller: 'noticeController',
         templateUrl: "modules/decorate/templates/notice-acceptance.html"
+      })
+      .state('decorate.notice.refund', { // 通知：退款申请已发出
+        url: "/refund/{decorateId:[0-9]+}",
+        controller: 'noticeController',
+        templateUrl: "modules/decorate/templates/notice-refund.html"
       });
   }
 ]);

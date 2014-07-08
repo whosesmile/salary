@@ -106,7 +106,19 @@ decorateModule.factory('decorateService', ['$http',
             decorateId: decorateId
           }
         });
+      },
+
+      // 申请退款
+      sendRefund: function (decorateId) {
+        return $http({
+          url: 'mock/decorate/success.json',
+          method: 'post',
+          data: {
+            decorateId: decorateId
+          }
+        });
       }
+
     };
   }
 ]);
