@@ -356,22 +356,6 @@ var serialize = function (obj) {
   return query.length ? query.substr(0, query.length - 1) : query;
 };
 // define module
-var homeModule = angular.module('homeModule', ['ui.router', 'ui.bootstrap']);
-
-// config router
-homeModule.config(['$stateProvider', '$urlRouterProvider',
-  function ($stateProvider, $urlRouterProvider) {
-
-    $urlRouterProvider.otherwise("/home");
-
-    $stateProvider
-      .state('home', {
-        url: "/home",
-        templateUrl: "modules/home/templates/home.html"
-      });
-  }
-]);
-// define module
 var testModule = angular.module('testModule', ['ui.router', 'ui.bootstrap']);
 
 // config router
@@ -389,16 +373,7 @@ testModule.config(['$stateProvider', '$urlRouterProvider',
 
 
 
-
-
-
-
-angular.module('templates', ['modules/home/templates/home.html', 'modules/test/templates/test.html']);
-
-angular.module("modules/home/templates/home.html", []).run(["$templateCache", function($templateCache) {
-  $templateCache.put("modules/home/templates/home.html",
-    "home");
-}]);
+angular.module('templates', ['modules/test/templates/test.html']);
 
 angular.module("modules/test/templates/test.html", []).run(["$templateCache", function($templateCache) {
   $templateCache.put("modules/test/templates/test.html",
