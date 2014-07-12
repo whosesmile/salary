@@ -1,88 +1,7 @@
-// Avoid console errors in browsers that lack a console.
-(function () {
-  var method;
-  var noop = function () {};
-  var methods = [
-    'assert', 'clear', 'count', 'debug', 'dir', 'dirxml', 'error',
-    'exception', 'group', 'groupCollapsed', 'groupEnd', 'info', 'log',
-    'markTimeline', 'profile', 'profileEnd', 'table', 'time', 'timeEnd',
-    'timeStamp', 'trace', 'warn'
-  ];
-  var length = methods.length;
-  var console = (window.console = window.console || {});
-
-  while (length--) {
-    method = methods[length];
-
-    // Only stub undefined methods.
-    if (!console[method]) {
-      console[method] = noop;
-    }
-  }
-})();
-
-// Make Array support indexOf and trim in ie7 and ie8
-(function () {
-  if (typeof Array.prototype.indexOf !== 'function') {
-    Array.prototype.indexOf = function (obj) {
-      for (var i = 0; i < this.length; i++) {
-        if (this[i] === obj) {
-          return i;
-        }
-      }
-      return -1;
-    };
-  }
-
-  if (typeof String.prototype.trim !== 'function') {
-    String.prototype.trim = function () {
-      return this.replace(/^\s+|\s+$/g, '');
-    };
-  }
-})();
-
-/**
- * Converts an object to x-www-form-urlencoded serialization.
- * @param {Object} obj
- * @return {String}
- */
-var serialize = function (obj) {
-  var query = '';
-  var name, value, fullSubName, subName, subValue, innerObj, i;
-
-  for (name in obj) {
-    if (obj.hasOwnProperty(name)) {
-      value = obj[name];
-
-      if (value instanceof Array) {
-        for (i = 0; i < value.length; ++i) {
-          subValue = value[i];
-          fullSubName = name + '[' + i + ']';
-          innerObj = {};
-          innerObj[fullSubName] = subValue;
-          query += serialize(innerObj) + '&';
-        }
-      }
-      else if (value instanceof Object) {
-        for (subName in value) {
-          subValue = value[subName];
-          fullSubName = name + '[' + subName + ']';
-          innerObj = {};
-          innerObj[fullSubName] = subValue;
-          query += serialize(innerObj) + '&';
-        }
-      }
-      else if (value !== undefined && value !== null) {
-        query += encodeURIComponent(name) + '=' + encodeURIComponent(value) + '&';
-      }
-    }
-  }
-
-  return query.length ? query.substr(0, query.length - 1) : query;
-};
+/* global serialize:true */
 
 // Initialize
-var app = angular.module('app', ['ui.router', 'demoModule']);
+var app = angular.module('app', ['ui.router', 'ui.bootstrap', 'templates', 'homeModule']);
 
 // HTTP拦截器
 app.config(['$httpProvider',
@@ -92,6 +11,7 @@ app.config(['$httpProvider',
 
     // Override transformRequest to serialize form data like jquery
     $httpProvider.defaults.transformRequest = [
+
       function (data) {
         return angular.isObject(data) && String(data) !== '[object File]' ? serialize(data) : data;
       }
@@ -102,11 +22,33 @@ app.config(['$httpProvider',
       function ($q) {
         return {
           request: function (config) {
+            // REST 风格路由重写
+            var rules = config.url.match(/:(\w+)/g);
+            if (rules !== null) {
+              angular.forEach(rules, function (rule) {
+                var name = rule.substring(1);
+                if (config.params && config.params.hasOwnProperty(name)) {
+                  config.url = config.url.replace(rule, config.params[name]);
+                  delete config.params[name];
+                }
+                else if (config.data && config.data.hasOwnProperty(name)) {
+                  config.url = config.url.replace(rule, config.data[name]);
+                  delete config.data[name];
+                }
+              });
+            }
             return $q.when(config);
           },
           response: function (response) {
-            if (response.config.parsing !== false && response.status === 200 && response.data.code === 200) {
-              return response.data;
+            if (response.config.parsing !== false && response.status === 200 && angular.isObject(response.data)) {
+              var res = response.data;
+              // 兼容旧数据格式
+              res.data = res.data || {};
+              if (res.data.message || res.message) {
+                res.data.message = res.data.message || res.message;
+              }
+
+              return [0, 200].indexOf(res.code) !== -1 ? res.data : $q.reject(res.data);
             }
             return $q.when(response);
           },
@@ -121,3 +63,8 @@ app.config(['$httpProvider',
     ]);
   }
 ]);
+
+// bootstrap
+angular.element(document).ready(function () {
+  angular.bootstrap(document, ['app']);
+});

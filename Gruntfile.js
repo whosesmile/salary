@@ -1,5 +1,8 @@
 /* global module:false, require:true */
 module.exports = function (grunt) {
+  var fs = require('fs');
+  var path = require('path');
+  var util = require('util');
 
   // load all grunt tasks matching the `grunt-*` pattern
   require('load-grunt-tasks')(grunt);
@@ -9,8 +12,11 @@ module.exports = function (grunt) {
     // Metadata.
     pkg: grunt.file.readJSON('package.json'),
 
+    bower: grunt.file.readJSON('.bowerrc'),
+
     config: {
-      folder: 'temp'
+      folder: 'temp',
+      livereload: 35740
     },
 
     banner: '/*! <%= pkg.name %> - v<%= pkg.version %> - ' +
@@ -26,31 +32,13 @@ module.exports = function (grunt) {
         cwd: '',
         dependencies: true,
         devDependencies: false,
-        exclude: ['json2', 'html5shiv', 'bootstrap'],
+        exclude: ['json2', 'html5shiv', 'bootstrap.js'],
         fileTypes: {},
         ignorePath: '',
         overrides: {}
       }
     },
-    concat: {
-      options: {
-        banner: '<%= banner %>',
-        stripBanners: true
-      },
-      dev: {
-        src: ['app/app.js', 'app/common/**/*.js', 'app/modules/**/*.js'],
-        dest: '<%= config.folder %>/smile.js' // ^ ^
-      }
-    },
-    uglify: {
-      options: {
-        banner: '<%= banner %>'
-      },
-      dev: {
-        src: '<%= concat.folder.dest %>',
-        dest: 'folder/<%= pkg.name %>.min.js'
-      }
-    },
+
     jshint: {
       options: {
         jshintrc: true
@@ -62,21 +50,64 @@ module.exports = function (grunt) {
         src: ['app/**/*.js']
       }
     },
+
+    html2js: {
+      options: {
+        module: 'templates',
+        rename: function (name) {
+          return name.replace('../app/', '');
+        }
+      },
+      dev: {
+        src: ['app/**/templates/*.html'],
+        dest: 'app/templates.js'
+      },
+    },
+    concat: {
+      options: {
+        banner: '<%= banner %>',
+        stripBanners: true
+      },
+      dev: {
+        src: ['app/app.js', 'app/common/**/*.js', 'app/modules/**/module.js', 'app/modules/**/*.js', 'app/templates.js'],
+        dest: '<%= config.folder %>/app.js' // ^ ^
+      }
+    },
+    uglify: {
+      options: {
+        banner: '<%= banner %>'
+      },
+      dev: {
+        src: '<%= concat.dev.dest %>',
+        dest: '<%= config.folder %>/app.min.js' // ^ ^
+      }
+    },
     watch: {
       options: {
-        livereload: true
+        livereload: '<%= config.livereload%>'
       },
       gruntfile: {
+        options: {
+          reload: true
+        },
         files: '<%= jshint.gruntfile.src %>',
         tasks: ['jshint:gruntfile']
       },
-      dev: {
+      js: {
         files: ['<%= jshint.dev.src %>'],
         tasks: ['concat:dev']
       },
-      html: {
-        files: 'app/index.html',
-        tasks: ['copy:html']
+      html2js: {
+        files: ['app/**/*.html', '!app/*.html'],
+        tasks: ['html2js:dev', 'concat:dev']
+      },
+      index: {
+        files: ['app/index.html'],
+        tasks: ['copy:index']
+      },
+      interface: {
+        files: ['interface/**/*'],
+        tasks: ['copy:interface']
       }
     },
     connect: {
@@ -86,12 +117,10 @@ module.exports = function (grunt) {
           // 这意味着如果存在相同文件，定义在前面的会优先返回
           base: ['<%= config.folder %>', '.'],
           port: 8888,
-          // open: true,
-          livereload: true,
-          hostname: 'localhost',
+          open: 'http://127.0.0.1:<%= connect.dev.options.port %>',
+          livereload: '<%= config.livereload%>',
+          hostname: '*',
           middleware: function (connect, options, middlewares) {
-            var fs = require('fs');
-            var path = require('path');
             var support = ['POST', 'PUT', 'DELETE'];
             middlewares.unshift(function (req, res, next) {
               // 单独处理POST请求 请求的地址必须是文件 这里没有进行rewrite处理
@@ -122,13 +151,13 @@ module.exports = function (grunt) {
           dest: '<%= config.folder %>'
         }]
       },
-      html: {
-        files: [{
-          expand: true,
-          cwd: 'app',
-          src: ['**/*.html'],
-          dest: '<%= config.folder %>'
-        }]
+      index: {
+        src: 'app/index.html',
+        dest: '<%= config.folder %>/index.html'
+      },
+      interface: {
+        src: 'interface',
+        dest: '<%= config.folder %>/interface'
       }
     },
     clean: {
@@ -136,16 +165,54 @@ module.exports = function (grunt) {
     }
   });
 
-  // connect 和 watch 都会阻塞进程 为了防止watch阻塞connect
-  // 将watch放在connect后边, 同时不要设定connect的keepalive
+  // 模块化工程 (如果工程太大 拆分成多个单页面App，而不是打包成一个大的App)
+  grunt.registerTask('modular', function (target) {
+    var base = path.join(__dirname, 'app/modules');
+    var paths = fs.readdirSync(base);
+    paths.forEach(function (name) {
+      var stats = fs.statSync(path.join(base, name));
+      if (stats.isDirectory()) {
+
+        var modulejs = util.format('%s/modules/%s.js', grunt.config('config.folder'), name);
+
+        // 将模板合并在一起
+        grunt.config(util.format('html2js.%s', name), {
+          src: util.format('app/modules/%s/templates/*.html', name),
+          dest: modulejs
+        });
+
+        // 合并模块内部脚本以及相关模板
+        grunt.config(util.format('concat.%s', name), {
+          src: ['app/app.js', 'app/common/**/*.js', 'app/modules/' + name + '/module.js', 'app/modules/' + name + '/*.js', modulejs],
+          dest: modulejs
+        });
+
+        grunt.task.run([util.format('html2js:%s', name), util.format('concat:%s', name)]);
+
+        // 是否是构建工程
+        if (target === 'dist') {
+          grunt.config(util.format('uglify.%s', name), {
+            src: modulejs,
+            dest: modulejs.replace(/js$/, 'min.js')
+          });
+
+          grunt.task.run(util.format('uglify:%s', name));
+        }
+      }
+    });
+
+  });
+
+  // watch会保持node运行 为防止阻塞其后的任务 将watch放在最后
+  // 这样也不再需要设定connect的keepalive
   grunt.registerTask('default', function () {
     grunt.config('config.folder', 'temp');
-    grunt.task.run(['clean:dev', 'copy:dev', 'concat:dev', 'connect:dev', 'watch']);
+    grunt.task.run(['clean:dev', 'copy:dev', 'html2js:dev', 'modular', 'concat:dev', 'connect:dev', 'watch']);
   });
 
   grunt.registerTask('dist', function () {
     grunt.config('config.folder', 'dist');
-    grunt.task.run(['clean:dev', 'copy:dev', 'concat:dev', 'connect:dev', 'watch']);
+    grunt.task.run(['clean:dev', 'copy:dev', 'html2js:dev', 'modular:dist', 'concat:dev', 'uglify:dev', 'connect:dev', 'watch']);
   });
 
 };
