@@ -20,7 +20,7 @@ homeModule.controller('examineController', function ($scope, $state, $stateParam
 
   var calculate = function () {
     // forEach answers cal ...
-    return 1000;
+    return 311320;
   };
 
   $scope.choose = function (answer) {
