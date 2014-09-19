@@ -1,7 +1,7 @@
 /*! qd-backend - v0.1.0 - 2014-07-12
 * Copyright (c) 2014 lovemoon@yeah.net; Licensed GPLv2 */
 // Initialize
-var app = angular.module('app', ['ui.router', 'ui.bootstrap', 'templates', 'homeModule']);
+var app = angular.module('app', ['ui.router', 'templates', 'homeModule']);
 
 // HTTP拦截器
 app.config(['$httpProvider',

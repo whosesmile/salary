@@ -1,0 +1,13 @@
+<h1 class="text-center">{{ question.title }}</h1>
+<h4 class="center-block">{{ question.subtitle }}</h4>
+
+<div class="questions">
+  <table class="table">
+    <tbody>
+      <tr ng-repeat="item in question.options" ng-class="{active: item.$active}" ng-click="choose(item)">
+        <td class="radio"><i></i></td>
+        <td class="option">{{ item.desc }}</td>
+      </tr>
+    </tbody>
+  </table>
+</div>

@@ -1,18 +1,23 @@
 {
-	"curly": true,
-	"eqeqeq": true,
-	"immed": true,
-	"latedef": true,
-	"newcap": true,
-	"noarg": true,
-	"sub": true,
-	"undef": true,
-	"unused": true,
-	"boss": true,
-	"eqnull": true,
-	"browser": true,
-	"globals": {
-		"angular": true,
-		"app": true
-	}
+  "curly": true,
+  "eqeqeq": true,
+  "immed": true,
+  "latedef": true,
+  "newcap": true,
+  "noarg": true,
+  "sub": true,
+  "undef": true,
+  "es3": true,
+  //"vars":true,
+  "unused": "vars",
+  "boss": true,
+  "eqnull": true,
+  "browser": true,
+  "globals": {
+    "angular": true,
+    "app": true,
+    "confirm": true,
+    "alert": true,
+    "prompt": true
+  }
 }
