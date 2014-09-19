@@ -212,6 +212,7 @@ module.exports = function (grunt) {
     clean: {
       dev: ['<%= config.folder %>']
     },
+    
     imagemin: { // Task
       dynamic: { // Another target
         files: [{
@@ -226,42 +227,42 @@ module.exports = function (grunt) {
 
   // 模块化工程 (如果工程太大 拆分成多个单页面App，而不是打包成一个大的App)
   grunt.registerTask('modular', function (target) {
-    // var base = path.join(__dirname, 'app/modules');
-    // var paths = fs.readdirSync(base);
-    // paths.forEach(function (name) {
-    //   var stats = fs.statSync(path.join(base, name));
-    //   if (/^[^.]/.test(name) && stats.isDirectory()) {
+    var base = path.join(__dirname, 'app/modules');
+    var paths = fs.readdirSync(base);
+    paths.forEach(function (name) {
+      var stats = fs.statSync(path.join(base, name));
+      if (/^[^.]/.test(name) && stats.isDirectory()) {
 
-    //     var singleModule = util.format('%s/modules/%s.js', grunt.config('config.folder'), name);
+        var singleModule = util.format('%s/modules/%s.js', grunt.config('config.folder'), name);
 
-    //     // 将模板合并在一起
-    //     grunt.config(util.format('html2js.%s', name), {
-    //       src: ['app/common/templates/**/*.html', util.format('app/modules/%s/templates/**/*.html', name)],
-    //       dest: singleModule
-    //     });
+        // 将模板合并在一起
+        grunt.config(util.format('html2js.%s', name), {
+          src: ['app/common/templates/**/*.html', util.format('app/modules/%s/templates/**/*.html', name)],
+          dest: singleModule
+        });
 
-    //     // 合并模块内部脚本以及相关模板 
-    //     // 1.经过html2js,现在singleModule是模板内容,再次合并它并保存会产生期望内容
-    //     // 2.由于路由可能全局需要，例如菜单导航，以及app声明了相关依赖
-    //     //   模块化也需要引用所有的路由定义既全部module.js，暂时还没想到更好的方案
-    //     grunt.config(util.format('concat.%s', name), {
-    //       src: ['app/app.js', 'app/common/**/*.js', 'app/modules/**/module.js', 'app/modules/account/**/*.js', 'app/modules/' + name + '/*.js', singleModule],
-    //       dest: singleModule
-    //     });
+        // 合并模块内部脚本以及相关模板 
+        // 1.经过html2js,现在singleModule是模板内容,再次合并它并保存会产生期望内容
+        // 2.由于路由可能全局需要，例如菜单导航，以及app声明了相关依赖
+        //   模块化也需要引用所有的路由定义既全部module.js，暂时还没想到更好的方案
+        grunt.config(util.format('concat.%s', name), {
+          src: ['app/app.js', 'app/common/**/*.js', 'app/modules/**/module.js', 'app/modules/account/**/*.js', 'app/modules/' + name + '/*.js', singleModule],
+          dest: singleModule
+        });
 
-    //     grunt.task.run([util.format('html2js:%s', name), util.format('concat:%s', name)]);
+        grunt.task.run([util.format('html2js:%s', name), util.format('concat:%s', name)]);
 
-    //     // 是否是构建工程
-    //     if (target === 'dist') {
-    //       grunt.config(util.format('uglify.%s', name), {
-    //         src: singleModule,
-    //         dest: singleModule.replace(/js$/, 'min.js')
-    //       });
+        // 是否是构建工程
+        if (target === 'dist') {
+          grunt.config(util.format('uglify.%s', name), {
+            src: singleModule,
+            dest: singleModule.replace(/js$/, 'min.js')
+          });
 
-    //       grunt.task.run(util.format('uglify:%s', name));
-    //     }
-    //   }
-    // });
+          grunt.task.run(util.format('uglify:%s', name));
+        }
+      }
+    });
   });
 
   // 开发

@@ -1,8 +1,12 @@
-/*! qd-backend - v0.1.0 - 2014-07-12
+/*! qd-backend - v0.1.0 - 2014-09-19 10:10:19
 * Copyright (c) 2014 lovemoon@yeah.net; Licensed GPLv2 */
 // Initialize
-var app = angular.module('app', ['ui.router', 'ui.bootstrap', 'templates', 'homeModule']);
+var app = angular.module('app', ['ui.router', 'templates', 'homeModule']);
 
+// bootstrap
+angular.element(document).ready(function () {
+  angular.bootstrap(document, ['app']);
+});
 // HTTP拦截器
 app.config(['$httpProvider',
   function ($httpProvider) {
@@ -18,8 +22,8 @@ app.config(['$httpProvider',
     ];
 
     // Add interceptor
-    $httpProvider.interceptors.push(['$q',
-      function ($q) {
+    $httpProvider.interceptors.push(['$q', '$injector',
+      function ($q, $injector) {
         return {
           request: function (config) {
             // REST 风格路由重写
@@ -37,18 +41,38 @@ app.config(['$httpProvider',
                 }
               });
             }
+
             return $q.when(config);
           },
           response: function (response) {
-            if (response.config.parsing !== false && response.status === 200 && angular.isObject(response.data)) {
+            if (angular.isObject(response.data)) {
               var res = response.data;
-              // 兼容旧数据格式
+              // 兼容旧数据格式 {code:0, message: '', data: {...}} --> {code:200, data: {message: '', ...}}
               res.data = res.data || {};
               if (res.data.message || res.message) {
                 res.data.message = res.data.message || res.message;
               }
+              // 如果返回结果失败 清理缓存 防止缓存错误
+              if ([0, 200].indexOf(res.code) === -1) {
+                $injector.get('$cacheFactory').get('$http').removeAll();
+              }
 
-              return [0, 200].indexOf(res.code) !== -1 ? res.data : $q.reject(res.data);
+              // 默认自动拆包
+              if (response.config.$parsing !== false) {
+                if ([0, 200].indexOf(res.code) !== -1) {
+                  return res.data;
+                }
+                else {
+                  if (response.config.$silence !== true) {
+                    alert(res.data.message || '不好意思，服务器开小差了。');
+                  }
+                  return $q.reject(res.data);
+                }
+              }
+              // 不拆包则返回服务器响应
+              else {
+                return $q.when(response.data);
+              }
             }
             return $q.when(response);
           },
@@ -64,153 +88,67 @@ app.config(['$httpProvider',
   }
 ]);
 
-// bootstrap
-angular.element(document).ready(function () {
-  angular.bootstrap(document, ['app']);
-});
-app.directive('csFocus', ['$timeout',
-  function ($timeout) {
-    return {
-      restrict: 'A',
-      replace: false,
-      link: function (scope, element) {
-        var times = 0;
-        (function focus() {
-          if (element.is(':visible')) {
-            element.focus();
-          }
-          else if (times++ < 1) {
-            $timeout(focus, 200);
-          }
-        }());
+app.run(function ($rootScope) {
+  $rootScope.title = '千丁小区';
+
+  var map = {
+    'IT民工薪资测试': ['home'],
+    '选择职业': ['skill'],
+    '技能测试': ['examine'],
+    '测试结果': ['salary']
+  };
+
+  // 改变网页标题
+  $rootScope.$on('$stateChangeSuccess', function (e, state, params, fromState, fromParams) {
+    for (var key in map) {
+      if (map.hasOwnProperty(key) && map[key].indexOf(state.name) !== -1) {
+        $rootScope.title = key;
       }
+    }
+  });
+});
+
+// 配置HTML5模式，不过需要后台配合，不然会出现404
+app.config(function ($locationProvider) {
+  // $locationProvider.html5Mode(false);
+});
+
+// 关闭微信底部导航
+app.run(['$rootScope',
+  function ($rootScope) {
+
+    var bridge = function () {
+      WeixinJSBridge.call('hideToolbar');
     };
+
+    $rootScope.$on('$stateChangeStart', function (e) {
+      if (typeof WeixinJSBridge === "undefined") {
+        document.addEventListener('WeixinJSBridgeReady', bridge, false);
+      }
+      else {
+        bridge();
+      }
+    });
   }
 ]);
-
-/**
- * 动态切换Input的type为Number
- * placeholder text for an input type="number" does not work in mobile webkit
- */
-app.directive('csNumber', function () {
+app.directive('csLayout', function ($rootScope) {
   return {
     restrict: 'A',
-    replace: false,
-    link: function (scope, element) {
-      element.on('focus', function () {
-        this.type = 'number';
-      }).on('blur', function () {
-        this.type = 'text';
+    templateUrl: 'common/templates/layout.partial.html',
+    link: function (scope, element, attrs) {
+      $rootScope.$on('$stateChangeSuccess', function (e, state) {
+        element.attr('class', state.name.replace(/\./g, '-'));
       });
     }
   };
 });
-
-/**
- * 保持在底部效果
- */
-app.directive('csBottom', ['$window', '$document',
-  function ($window, $document) {
-    return {
-      restrict: 'A',
-      replace: false,
-      link: function (scope, element) {
-        var listener = function () {
-          element.toggleClass('keep-bottom', window.innerHeight >= $document.height());
-        };
-
-        var show = function (e) {
-          // 可以调出虚拟键盘的空间类型
-          var needInput = ['datetime', 'datetime-local', 'email', 'month', 'number', 'range', 'search', 'tel', 'time', 'url', 'week'].indexOf(e.target.type);
-          if (element.hasClass('keep-bottom') && (e.target.tagName === 'TEXTAREA' || needInput)) {
-            element.hide();
-          }
-        };
-
-        var hide = function () {
-          element.show();
-        };
-
-        $document.on('focus', 'input,textarea', show);
-        $document.on('blur', 'input,textarea', hide);
-
-        angular.element($window).on('resize', listener).resize();
-
-        // 清理事件 防止内存泄露
-        element.on('$destroy', function () {
-          angular.element($window).off('resize', listener);
-          $document.off('focus', 'input,textarea', show);
-          $document.off('blur', 'input,textarea', hide);
-        });
-      }
-    };
-  }
-]);
-
-/**
- * The cs-Thumbnail directive
- * @author: nerv
- * @version: 0.1.2, 2014-01-09
- */
-app.directive('csThumbnail', ['$window',
-  function ($window) {
-    var helper = {
-      support: !!($window.FileReader && $window.CanvasRenderingContext2D),
-      isFile: function (item) {
-        return angular.isObject(item) && item instanceof $window.File;
-      },
-      isImage: function (file) {
-        var type = '|' + file.type.slice(file.type.lastIndexOf('/') + 1) + '|';
-        return '|jpg|png|jpeg|bmp|gif|'.indexOf(type) !== -1;
-      }
-    };
-
-    return {
-      restrict: 'A',
-      template: '<canvas />',
-      link: function (scope, element, attrs) {
-        if (!helper.support) {
-          return;
-        }
-
-        var params = scope.$eval(attrs.csThumbnail);
-
-        if (!helper.isFile(params.file) || !helper.isImage(params.file)) {
-          return;
-        }
-
-        var canvas = element.find('canvas');
-        var reader = new FileReader();
-
-        reader.onload = onLoadFile;
-        reader.readAsDataURL(params.file);
-
-        function onLoadFile(event) {
-          var img = new Image();
-          img.onload = onLoadImage;
-          img.src = event.target.result;
-        }
-
-        function onLoadImage() {
-          var width = params.width || this.width / this.height * params.height;
-          var height = params.height || this.height / this.width * params.width;
-          canvas.attr({
-            width: width,
-            height: height
-          });
-          canvas[0].getContext('2d').drawImage(this, 0, 0, width, height);
-        }
-      }
-    };
-  }
-]);
 // 为了分割数组以便二次使用ng-repeat
 // 通常需要的场景是你需要每隔N个元素插入分组节点
 // 如果你修改items内部元素的属性 angular会自动watch更新
-// 但如果动态增删items的元素，需要手动删除items.$rows，以便重新计算
+// 如果动态增删items的元素，要删除items.$rows，以便重新计算
 
-app.filter('group', function () {
-  return function (items, cols) {
+app.filter('group', function() {
+  return function(items, cols) {
     if (!items) {
       return items;
     }
@@ -223,8 +161,7 @@ app.filter('group', function () {
 
       if (temp.length !== items.length) {
         delete items.$rows;
-      }
-      else {
+      } else {
         for (var j = 0; j < items.length; j++) {
           if (items[j] !== temp[j]) {
             delete items.$rows;
@@ -251,74 +188,43 @@ app.filter('group', function () {
 });
 
 // 判断是否是空白对象
-app.filter('empty', function () {
-  return function (obj) {
+app.filter('empty', function() {
+  return function(obj) {
     return !obj || angular.equals({}, obj) || angular.equals([], obj);
   };
 });
 
 // 取两个数最小的
-app.filter('min', function () {
-  return function (num, limit) {
+app.filter('min', function() {
+  return function(num, limit) {
     return Math.min(num, limit);
   };
 });
 
 // 取两个数最大的
-app.filter('max', function () {
-  return function (num, limit) {
+app.filter('max', function() {
+  return function(num, limit) {
     return Math.max(num, limit);
   };
 });
 
-// Avoid console errors in browsers that lack a console.
-(function () {
-  var method;
-  var noop = function () {};
-  var methods = [
-    'assert', 'clear', 'count', 'debug', 'dir', 'dirxml', 'error',
-    'exception', 'group', 'groupCollapsed', 'groupEnd', 'info', 'log',
-    'markTimeline', 'profile', 'profileEnd', 'table', 'time', 'timeEnd',
-    'timeStamp', 'trace', 'warn'
-  ];
-  var length = methods.length;
-  var console = (window.console = window.console || {});
-
-  while (length--) {
-    method = methods[length];
-
-    // Only stub undefined methods.
-    if (!console[method]) {
-      console[method] = noop;
-    }
-  }
-})();
-
-// Make Array support indexOf and trim in ie7 and ie8
-(function () {
-  if (typeof Array.prototype.indexOf !== 'function') {
-    Array.prototype.indexOf = function (obj) {
-      for (var i = 0; i < this.length; i++) {
-        if (this[i] === obj) {
-          return i;
-        }
-      }
-      return -1;
+// 安全过滤 配合 ng-bind-html 使用
+app.filter('safe', ['$sce',
+  function($sce) {
+    return function(text) {
+      return $sce.trustAsHtml(text);
     };
   }
+]);
 
-  if (typeof String.prototype.trim !== 'function') {
-    String.prototype.trim = function () {
-      return this.replace(/^\s+|\s+$/g, '');
-    };
-  }
-})();
-
-/**
- * Converts an object to x-www-form-urlencoded serialization.
- * @param {Object} obj
- * @return {String}
- */
+// 是否判断
+app.filter('is', function() {
+  return function(status, bool) {
+    bool = angular.isUndefined(bool) ? true : bool;
+    status = bool ? status : !status;
+    return status ? '是' : '否';
+  };
+});
 var serialize = function (obj) {
   var query = '';
   var name, value, fullSubName, subName, subValue, innerObj, i;
@@ -356,7 +262,7 @@ var serialize = function (obj) {
   return query.length ? query.substr(0, query.length - 1) : query;
 };
 // define module
-var homeModule = angular.module('homeModule', ['ui.router', 'ui.bootstrap']);
+var homeModule = angular.module('homeModule', ['ui.router']);
 
 // config router
 homeModule.config(['$stateProvider', '$urlRouterProvider',
@@ -368,16 +274,114 @@ homeModule.config(['$stateProvider', '$urlRouterProvider',
       .state('home', {
         url: "/home",
         templateUrl: "modules/home/templates/home.html"
+      })
+      .state('skill', {
+        url: "/skill",
+        templateUrl: "modules/home/templates/skill.html",
+        controller: 'skillController'
+      })
+      .state('examine', {
+        url: "/examine/:skill",
+        templateUrl: "modules/home/templates/examine.html",
+        controller: 'examineController'
+      })
+      .state('salary', {
+        url: "/salary/:salary",
+        templateUrl: "modules/home/templates/salary.html",
+        controller: 'salaryController'
       });
   }
 ]);
+homeModule.controller('skillController', function ($scope, homeService) {
+  homeService.listSkill().then(function (res) {
+    $scope.list = res.list;
+  });
+});
+
+homeModule.controller('examineController', function ($scope, $state, $stateParams, $timeout, homeService) {
+
+  var list = null;
+  var answers = [];
+
+  var next = function () {
+    if (answers.length === list.length) {
+      $state.go('salary', {
+        salary: calculate()
+      });
+    }
+    $scope.question = list[answers.length];
+  };
+
+  var calculate = function () {
+    // forEach answers cal ...
+    return 1000;
+  };
+
+  $scope.choose = function (answer) {
+    answers.push(answer);
+    answer.$active = true;
+    $timeout(next, 200);
+  };
+
+  homeService.getQuestions($stateParams.skill).then(function (res) {
+    list = res.list;
+    next();
+  });
+
+});
+
+homeModule.controller('salaryController', function ($scope, $state, $stateParams) {
+  $scope.salary = $stateParams.salary;
+});
 
 
+homeModule.factory('homeService', function ($http) {
 
+  return {
+    listSkill: function () {
+      return $http({
+        url: '/service/skill',
+        method: 'get',
+        cache: true
+      });
+    },
 
-angular.module('templates', ['modules/home/templates/home.html']);
+    getQuestions: function (skill) {
+      return $http({
+        url: '/service/questions',
+        method: 'get',
+        params: {
+          skill: skill
+        },
+        cache: true
+      });
+    }
+  };
+
+});
+angular.module('templates', ['common/templates/layout.partial.html', 'modules/home/templates/examine.html', 'modules/home/templates/home.html', 'modules/home/templates/salary.html', 'modules/home/templates/skill.html']);
+
+angular.module("common/templates/layout.partial.html", []).run(["$templateCache", function($templateCache) {
+  $templateCache.put("common/templates/layout.partial.html",
+    "<div class=\"ui-view\"></div>");
+}]);
+
+angular.module("modules/home/templates/examine.html", []).run(["$templateCache", function($templateCache) {
+  $templateCache.put("modules/home/templates/examine.html",
+    "<h1 class=\"text-center\">{{ question.title }}</h1><h4 class=\"center-block\">{{ question.subtitle }}</h4><div class=\"questions\"><table class=\"table\"><tbody><tr ng-repeat=\"item in question.options\" ng-class=\"{active: item.$active}\" ng-click=\"choose(item)\"><td class=\"radio\"><i></i></td><td class=\"option\">{{ item.desc }}</td></tr></tbody></table></div>");
+}]);
 
 angular.module("modules/home/templates/home.html", []).run(["$templateCache", function($templateCache) {
   $templateCache.put("modules/home/templates/home.html",
-    "home");
+    "<div class=\"sprite sprite-logo center-block\"></div><a class=\"sprite sprite-start center-block\" ui-sref=\"skill\"></a>");
+}]);
+
+angular.module("modules/home/templates/salary.html", []).run(["$templateCache", function($templateCache) {
+  $templateCache.put("modules/home/templates/salary.html",
+    "<div class=\"sprite sprite-over center-block\"></div><h3 class=\"text-center\">恭喜你，你的年薪是</h3><h1 class=\"text-center\">{{ salary }}</h1><div class=\"conclusion\"><hr><p>当然这些都只是预估啦，薪水神马的不仅仅跟技术水平相关，还跟地域、行业、公司都有关系。</p><p>可是想要在技术领域里做出一点成绩来，还是需要多了解一些大牛们的技术体系，<a>点击这里</a>去看下高薪职位对应<a>技能树</a>吧~</p><p>或者先分享给朋友们，嘚瑟一下~</p><a class=\"btn btn-primary btn-block\">绝不能一个人享，分享给朋友</a></div>");
+}]);
+
+angular.module("modules/home/templates/skill.html", []).run(["$templateCache", function($templateCache) {
+  $templateCache.put("modules/home/templates/skill.html",
+    "<ul class=\"list-unstyled skill-list center-block\"><li ng-repeat=\"name in list\"><a ui-sref=\"examine({skill: name})\"><span>{{ name }}</span>程序员</a></li></ul>");
 }]);

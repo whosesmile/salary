@@ -26,7 +26,7 @@ homeModule.controller('examineController', function ($scope, $state, $stateParam
   $scope.choose = function (answer) {
     answers.push(answer);
     answer.$active = true;
-    $timeout(next, 300);
+    $timeout(next, 200);
   };
 
   homeService.getQuestions($stateParams.skill).then(function (res) {

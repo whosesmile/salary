@@ -13,6 +13,9 @@ homeModule.factory('homeService', function ($http) {
       return $http({
         url: '/service/questions',
         method: 'get',
+        params: {
+          skill: skill
+        },
         cache: true
       });
     }

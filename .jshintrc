@@ -18,6 +18,7 @@
     "app": true,
     "confirm": true,
     "alert": true,
-    "prompt": true
+    "prompt": true,
+    "WeixinJSBridge": true
   }
 }
