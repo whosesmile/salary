@@ -1,4 +1,4 @@
-/*! qd-backend - v0.1.0 - 2014-09-22 12:54:22
+/*! qd-backend - v0.1.0 - 2014-09-22 13:18:22
 * Copyright (c) 2014 lovemoon@yeah.net; Licensed GPLv2 */
 // Initialize
 var app = angular.module('app', ['ui.router', 'templates', 'homeModule']);
