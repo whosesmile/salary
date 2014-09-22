@@ -180,6 +180,14 @@ module.exports = function (grunt) {
           dest: '<%= config.folder %>'
         }]
       },
+      mock: {
+        files: [{
+          expand: true,
+          cwd: 'interface',
+          src: '**/*',
+          dest: 'dist'
+        }]
+      },
       index: {
         src: 'app/index.html',
         dest: '<%= config.folder %>/index.html'
@@ -212,7 +220,7 @@ module.exports = function (grunt) {
     clean: {
       dev: ['<%= config.folder %>']
     },
-    
+
     imagemin: { // Task
       dynamic: { // Another target
         files: [{
@@ -274,7 +282,7 @@ module.exports = function (grunt) {
   // 打包
   grunt.registerTask('dist', function () {
     grunt.config('config.folder', 'dist');
-    grunt.task.run(['clean:dev', 'copy:dev', 'imagemin', 'html2js:dev', 'modular:dist', 'concat:dev', 'ngAnnotate:dev', 'uglify:dev', 'cssmin:dev']);
+    grunt.task.run(['clean:dev', 'copy:dev', 'copy:mock', 'imagemin', 'html2js:dev', 'modular:dist', 'concat:dev', 'ngAnnotate:dev', 'uglify:dev', 'cssmin:dev']);
   });
 
   // 验证
